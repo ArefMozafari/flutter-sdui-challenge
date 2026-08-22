@@ -5,30 +5,58 @@ import 'validation_result.dart';
 
 /// Validates one field's current [FieldValue] against its [FormFieldSpec].
 ///
-/// A `switch` over the `(spec, value)` record pattern-matches both sealed
-/// hierarchies at once — add a sixth field type and this fails to compile
-/// until a case is added, same exhaustiveness guarantee as the widget
-/// registry gets deliberately opted out of (see `FieldWidgetRegistry`).
-///
-/// The `(spec, value)` pairing is an invariant kept by whoever constructs
-/// the initial [FieldValue] for a field (the Presentation controller, in
-/// Branch 3) — every [TextFieldSpec] always starts life paired with a
-/// [TextValue], never a [NumberValue]. A mismatch here is a programming
-/// error, not a user input error, so it throws rather than degrading to a
-/// silent "valid".
+/// The outer `switch` is over [spec] alone, so it's exhaustive over all six
+/// [FormFieldSpec] subtypes at compile time — add a seventh and this fails
+/// to build until it's handled, the same guarantee the widget registry
+/// deliberately opts out of (see `FieldWidgetRegistry`). Each case then
+/// asserts [value] is the matching [FieldValue] subtype via `_expect*`:
+/// that pairing is an invariant kept by whoever constructs the initial
+/// [FieldValue] for a field (the Presentation controller, in Branch 3) —
+/// every [TextFieldSpec] always starts life paired with a [TextValue],
+/// never a [NumberValue]. A mismatch is a programming error, not a user
+/// input error, so it throws rather than degrading to a silent "valid".
 ValidationResult validateField(FormFieldSpec spec, FieldValue value) {
-  return switch ((spec, value)) {
-    (TextFieldSpec s, TextValue v) => _validateText(s.validation, v),
-    (MultilineFieldSpec s, TextValue v) => _validateText(s.validation, v),
-    (NumberFieldSpec s, NumberValue v) => _validateNumber(s.validation, v),
-    (SelectFieldSpec s, SelectValue v) => _validateSelect(s.validation, v),
-    (FileFieldSpec s, FileValue v) => _validateFiles(s.validation, v),
-    (_, _) => throw StateError(
-        'FieldValue ${value.runtimeType} does not match '
-        'FormFieldSpec ${spec.runtimeType} for field "${spec.name}"',
-      ),
+  return switch (spec) {
+    TextFieldSpec() => _validateText(spec.validation, _expectText(spec, value)),
+    MultilineFieldSpec() => _validateText(
+      spec.validation,
+      _expectText(spec, value),
+    ),
+    NumberFieldSpec() => _validateNumber(
+      spec.validation,
+      _expectNumber(spec, value),
+    ),
+    SelectFieldSpec() => _validateSelect(
+      spec.validation,
+      _expectSelect(spec, value),
+    ),
+    FileFieldSpec() => _validateFiles(
+      spec.validation,
+      _expectFiles(spec, value),
+    ),
+    UnsupportedFieldSpec() => throw StateError(
+      'UnsupportedFieldSpec "${spec.name}" is never editable and should '
+      'never reach the validator',
+    ),
   };
 }
+
+TextValue _expectText(FormFieldSpec spec, FieldValue value) =>
+    value is TextValue ? value : _mismatch(spec, value);
+
+NumberValue _expectNumber(FormFieldSpec spec, FieldValue value) =>
+    value is NumberValue ? value : _mismatch(spec, value);
+
+SelectValue _expectSelect(FormFieldSpec spec, FieldValue value) =>
+    value is SelectValue ? value : _mismatch(spec, value);
+
+FileValue _expectFiles(FormFieldSpec spec, FieldValue value) =>
+    value is FileValue ? value : _mismatch(spec, value);
+
+Never _mismatch(FormFieldSpec spec, FieldValue value) => throw StateError(
+  'FieldValue ${value.runtimeType} does not match '
+  'FormFieldSpec ${spec.runtimeType} for field "${spec.name}"',
+);
 
 ValidationResult _validateText(FieldValidation rules, TextValue value) {
   final text = value.text.trim();

@@ -5,12 +5,12 @@ import 'package:flutter_test/flutter_test.dart';
 /// is ever added without updating this switch, this file fails to
 /// compile — the same guarantee callers of [Failure] get in production.
 String describe(Failure failure) => switch (failure) {
-      NetworkFailure() => 'network',
-      TimeoutFailure() => 'timeout',
-      ServerFailure(:final statusCode) => 'server:$statusCode',
-      ParseFailure(:final details) => 'parse:$details',
-      UnexpectedFailure(:final details) => 'unexpected:$details',
-    };
+  NetworkFailure() => 'network',
+  TimeoutFailure() => 'timeout',
+  ServerFailure(:final statusCode) => 'server:$statusCode',
+  ParseFailure(:final details) => 'parse:$details',
+  UnexpectedFailure(:final details) => 'unexpected:$details',
+};
 
 void main() {
   test('every failure subtype is distinguishable', () {

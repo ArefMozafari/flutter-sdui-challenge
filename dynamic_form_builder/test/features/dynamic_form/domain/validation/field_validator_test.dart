@@ -121,18 +121,12 @@ void main() {
     });
 
     test('too many files is invalid', () {
-      final result = validateField(
-        spec,
-        FileValue([file(), file(), file()]),
-      );
+      final result = validateField(spec, FileValue([file(), file(), file()]));
       expect((result as InvalidResult).messageKey, 'validationTooManyFiles');
     });
 
     test('oversized file is invalid', () {
-      final result = validateField(
-        spec,
-        FileValue([file(sizeBytes: 2048)]),
-      );
+      final result = validateField(spec, FileValue([file(sizeBytes: 2048)]));
       expect((result as InvalidResult).messageKey, 'validationFileTooLarge');
     });
 
@@ -159,9 +153,15 @@ void main() {
       sizeHint: FieldSizeHint.medium,
       validation: FieldValidation.none,
     );
-    expect(
-      () => validateField(spec, const NumberValue(1)),
-      throwsStateError,
+    expect(() => validateField(spec, const NumberValue(1)), throwsStateError);
+  });
+
+  test('validating an unsupported field spec throws', () {
+    const spec = UnsupportedFieldSpec(
+      name: 'signature',
+      label: 'Signature',
+      rawType: 'signature',
     );
+    expect(() => validateField(spec, const TextValue('')), throwsStateError);
   });
 }
