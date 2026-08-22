@@ -1,0 +1,55 @@
+{
+  "@@locale": "en",
+
+  "appTitle": "Dynamic Form Builder",
+  "@appTitle": { "description": "App title shown in the OS task switcher / app bar." },
+
+  "actionSubmit": "Submit",
+  "actionRetry": "Retry",
+  "actionPickFile": "Choose file",
+
+  "stateLoading": "Loading form…",
+  "stateSubmitting": "Submitting…",
+  "stateSubmitSuccess": "Form submitted successfully",
+
+  "errorGeneric": "Something went wrong",
+  "errorNetwork": "Check your connection and try again",
+  "errorTimeout": "The request timed out",
+  "errorServer": "Server error. Please try again later",
+  "errorParse": "Received an unexpected response from the server",
+
+  "fieldUnsupportedTitle": "Unsupported field",
+  "fieldUnsupportedBody": "This field type isn't supported yet: {type}",
+  "@fieldUnsupportedBody": {
+    "description": "Shown in place of a field whose server-declared type has no renderer yet.",
+    "placeholders": { "type": { "type": "String" } }
+  },
+
+  "validationRequired": "This field is required",
+  "validationMinLength": "Must be at least {min} characters",
+  "@validationMinLength": {
+    "placeholders": { "min": { "type": "int" } }
+  },
+  "validationMaxLength": "Must be at most {max} characters",
+  "@validationMaxLength": {
+    "placeholders": { "max": { "type": "int" } }
+  },
+  "validationMin": "Must be at least {min}",
+  "@validationMin": {
+    "placeholders": { "min": { "type": "num" } }
+  },
+  "validationMax": "Must be at most {max}",
+  "@validationMax": {
+    "placeholders": { "max": { "type": "num" } }
+  },
+  "validationInvalidNumber": "Enter a valid number",
+  "validationFileTooLarge": "File must be smaller than {maxSize}",
+  "@validationFileTooLarge": {
+    "placeholders": { "maxSize": { "type": "String" } }
+  },
+  "validationTooManyFiles": "You can upload up to {max} files",
+  "@validationTooManyFiles": {
+    "placeholders": { "max": { "type": "int" } }
+  },
+  "validationUnsupportedFileType": "Unsupported file type"
+}
