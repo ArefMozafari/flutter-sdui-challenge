@@ -1,0 +1,80 @@
+{
+  "formId": "car_listing",
+  "version": 1,
+  "submitUrl": "/api/forms/car_listing/submit",
+  "fields": [
+    {
+      "type": "text",
+      "name": "brand",
+      "label": "برند:",
+      "placeholder": "برند ماشین را وارد کنید",
+      "style": { "size": "large" },
+      "validation": { "required": true, "minLength": 2, "maxLength": 40 }
+    },
+    {
+      "type": "text",
+      "name": "model",
+      "label": "مدل:",
+      "placeholder": "مدل ماشین را وارد کنید",
+      "style": { "size": "medium" },
+      "validation": { "required": true, "minLength": 1, "maxLength": 40 }
+    },
+    {
+      "type": "number",
+      "name": "year",
+      "label": "سال ساخت:",
+      "placeholder": "سال ساخت را وارد کنید",
+      "style": { "size": "medium" },
+      "validation": { "required": true, "min": 1900, "max": 2024 }
+    },
+    {
+      "type": "select",
+      "name": "fuel_type",
+      "label": "نوع سوخت:",
+      "style": { "size": "medium" },
+      "options": [
+        { "label": "بنزین", "value": "gasoline" },
+        { "label": "گاز", "value": "gas" },
+        { "label": "دیزل", "value": "diesel" },
+        { "label": "الکتریکی", "value": "electric" }
+      ],
+      "validation": { "required": true }
+    },
+    {
+      "type": "text",
+      "name": "color",
+      "label": "رنگ ماشین:",
+      "placeholder": "رنگ ماشین را وارد کنید",
+      "style": { "size": "medium" },
+      "validation": {}
+    },
+    {
+      "type": "number",
+      "name": "previous_owners",
+      "label": "تعداد مالکین قبلی:",
+      "placeholder": "تعداد مالکین قبلی را وارد کنید",
+      "style": { "size": "medium" },
+      "validation": { "min": 0 }
+    },
+    {
+      "type": "multiline",
+      "name": "technical_condition",
+      "label": "توضیحات وضعیت فنی:",
+      "placeholder": "توضیحات درباره وضعیت فنی ماشین",
+      "style": { "size": "medium" },
+      "validation": { "maxLength": 500 }
+    },
+    {
+      "type": "file",
+      "name": "car_images",
+      "label": "تصاویر ماشین:",
+      "style": {},
+      "validation": {
+        "required": true,
+        "accept": ["image/*"],
+        "maxSizeBytes": 5242880,
+        "maxFiles": 10
+      }
+    }
+  ]
+}
