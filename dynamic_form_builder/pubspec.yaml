@@ -68,6 +68,9 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  # Generates AppLocalizations from lib/core/l10n/*.arb (see l10n.yaml).
+  generate: true
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

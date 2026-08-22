@@ -1,0 +1,32 @@
+{
+  "@@locale": "fa",
+
+  "appTitle": "فرم‌ساز پویا",
+
+  "actionSubmit": "ثبت",
+  "actionRetry": "تلاش مجدد",
+  "actionPickFile": "انتخاب فایل",
+
+  "stateLoading": "در حال بارگذاری فرم…",
+  "stateSubmitting": "در حال ارسال…",
+  "stateSubmitSuccess": "فرم با موفقیت ارسال شد",
+
+  "errorGeneric": "خطایی رخ داد",
+  "errorNetwork": "اتصال اینترنت را بررسی کنید و دوباره تلاش کنید",
+  "errorTimeout": "درخواست با تأخیر مواجه شد",
+  "errorServer": "خطای سرور. لطفاً بعداً دوباره تلاش کنید",
+  "errorParse": "پاسخ غیرمنتظره‌ای از سرور دریافت شد",
+
+  "fieldUnsupportedTitle": "فیلد پشتیبانی‌نشده",
+  "fieldUnsupportedBody": "این نوع فیلد هنوز پشتیبانی نمی‌شود: {type}",
+
+  "validationRequired": "این فیلد الزامی است",
+  "validationMinLength": "باید حداقل {min} نویسه باشد",
+  "validationMaxLength": "باید حداکثر {max} نویسه باشد",
+  "validationMin": "باید حداقل {min} باشد",
+  "validationMax": "باید حداکثر {max} باشد",
+  "validationInvalidNumber": "یک عدد معتبر وارد کنید",
+  "validationFileTooLarge": "حجم فایل باید کمتر از {maxSize} باشد",
+  "validationTooManyFiles": "حداکثر {max} فایل می‌توانید بارگذاری کنید",
+  "validationUnsupportedFileType": "نوع فایل پشتیبانی نمی‌شود"
+}
