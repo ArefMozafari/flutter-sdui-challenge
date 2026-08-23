@@ -26,20 +26,29 @@ final class SelectValue extends FieldValue {
 
 final class FileValue extends FieldValue {
   const FileValue(this.files);
-  final List<SelectedFileMeta> files;
+  final List<SelectedFile> files;
 }
 
-/// Metadata for a file the user picked, enough to validate against
-/// [FieldValidation] (size, count, accepted MIME type) without Domain ever
-/// touching the actual bytes or a platform file-picker type.
-class SelectedFileMeta {
-  const SelectedFileMeta({
+/// A file the user picked. Carries the actual bytes, not just metadata —
+/// `List<int>` is plain Dart data, so holding it doesn't cost Domain its
+/// purity (no `BuildContext`, no platform file-picker type, still zero
+/// Flutter imports). It has to: Application's `submitForm` needs real bytes
+/// to build a Data-layer `SubmissionFile`, and since Presentation stays
+/// Domain-shaped for that call (see the layer-skip rule in the plan doc),
+/// there's nowhere else for them to come from. [sizeBytes] is derived from
+/// [bytes] rather than stored separately — a second stored length would
+/// just be a value that could drift from the bytes it's supposedly
+/// describing.
+class SelectedFile {
+  const SelectedFile({
     required this.name,
-    required this.sizeBytes,
     required this.mimeType,
+    required this.bytes,
   });
 
   final String name;
-  final int sizeBytes;
   final String mimeType;
+  final List<int> bytes;
+
+  int get sizeBytes => bytes.length;
 }

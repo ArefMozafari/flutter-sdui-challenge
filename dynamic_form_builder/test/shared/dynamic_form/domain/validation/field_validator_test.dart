@@ -112,8 +112,12 @@ void main() {
       ),
     );
 
-    SelectedFileMeta file({int sizeBytes = 100, String mime = 'image/png'}) =>
-        SelectedFileMeta(name: 'a.png', sizeBytes: sizeBytes, mimeType: mime);
+    SelectedFile file({int sizeBytes = 100, String mime = 'image/png'}) =>
+        SelectedFile(
+          name: 'a.png',
+          mimeType: mime,
+          bytes: List.filled(sizeBytes, 0),
+        );
 
     test('no files is invalid when required', () {
       final result = validateField(spec, const FileValue([]));
