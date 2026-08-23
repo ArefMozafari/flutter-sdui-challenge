@@ -14,7 +14,7 @@ sealed class ValidationResult {
 
   const factory ValidationResult.invalid(
     String messageKey, {
-    Map<String, String> args,
+    Map<String, Object> args,
   }) = InvalidResult;
 
   bool get isValid => this is ValidResult;
@@ -30,6 +30,10 @@ final class InvalidResult extends ValidationResult {
   /// An `AppLocalizations` message key, e.g. `validationMinLength`.
   final String messageKey;
 
-  /// Placeholder values for the message, e.g. `{'min': '2'}`.
-  final Map<String, String> args;
+  /// Placeholder values for the message, real-typed — e.g. `{'min': 2}`,
+  /// not `{'min': '2'}`. The generated `AppLocalizations` methods take
+  /// typed positional args (`validationMinLength(int min)`,
+  /// `validationMax(num max)`, `validationFileTooLarge(String maxSize)`);
+  /// pre-stringifying here would just make Presentation parse them back.
+  final Map<String, Object> args;
 }

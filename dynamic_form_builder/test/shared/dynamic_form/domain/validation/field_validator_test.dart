@@ -1,10 +1,10 @@
-import 'package:dynamic_form_builder/features/dynamic_form/domain/models/field_size_hint.dart';
-import 'package:dynamic_form_builder/features/dynamic_form/domain/models/field_validation.dart';
-import 'package:dynamic_form_builder/features/dynamic_form/domain/models/field_value.dart';
-import 'package:dynamic_form_builder/features/dynamic_form/domain/models/form_field_spec.dart';
-import 'package:dynamic_form_builder/features/dynamic_form/domain/models/select_option.dart';
-import 'package:dynamic_form_builder/features/dynamic_form/domain/validation/field_validator.dart';
-import 'package:dynamic_form_builder/features/dynamic_form/domain/validation/validation_result.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/field_size_hint.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/field_validation.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/field_value.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/form_field_spec.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/select_option.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/validation/field_validator.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/validation/validation_result.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -29,13 +29,13 @@ void main() {
     test('below minLength is invalid', () {
       final result = validateField(spec, const TextValue('a'));
       expect((result as InvalidResult).messageKey, 'validationMinLength');
-      expect(result.args, {'min': '2'});
+      expect(result.args, {'min': 2});
     });
 
     test('above maxLength is invalid', () {
       final result = validateField(spec, const TextValue('abcdef'));
       expect((result as InvalidResult).messageKey, 'validationMaxLength');
-      expect(result.args, {'max': '5'});
+      expect(result.args, {'max': 5});
     });
 
     test('within bounds is valid', () {
@@ -112,8 +112,12 @@ void main() {
       ),
     );
 
-    SelectedFileMeta file({int sizeBytes = 100, String mime = 'image/png'}) =>
-        SelectedFileMeta(name: 'a.png', sizeBytes: sizeBytes, mimeType: mime);
+    SelectedFile file({int sizeBytes = 100, String mime = 'image/png'}) =>
+        SelectedFile(
+          name: 'a.png',
+          mimeType: mime,
+          bytes: List.filled(sizeBytes, 0),
+        );
 
     test('no files is invalid when required', () {
       final result = validateField(spec, const FileValue([]));

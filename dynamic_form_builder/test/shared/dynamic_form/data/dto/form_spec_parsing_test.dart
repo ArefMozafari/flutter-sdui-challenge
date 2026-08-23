@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:dynamic_form_builder/features/dynamic_form/data/dto/form_spec_dto.dart';
-import 'package:dynamic_form_builder/features/dynamic_form/domain/models/form_field_spec.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/data/dto/form_spec_dto.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/form_field_spec.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Map<String, dynamic> _loadFixture(String name) {

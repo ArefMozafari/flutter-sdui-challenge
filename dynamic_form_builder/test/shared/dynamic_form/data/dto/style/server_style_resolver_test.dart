@@ -1,5 +1,5 @@
-import 'package:dynamic_form_builder/features/dynamic_form/data/dto/style/server_style_resolver.dart';
-import 'package:dynamic_form_builder/features/dynamic_form/domain/models/field_size_hint.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/data/dto/style/server_style_resolver.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/field_size_hint.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

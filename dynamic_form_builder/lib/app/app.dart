@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/design_system/theme/app_theme.dart';
 import '../core/l10n/app_localizations.dart';
+import '../shared/dynamic_form/presentation/widgets/dynamic_form_view.dart';
 
-/// App root. `ProviderScope` is wired here even though no feature reads a
-/// provider yet — the dynamic-form feature (added on top of this branch)
-/// depends on it existing, and there's nothing else that should own it.
+/// App root. `ProviderScope` is wired here since `DynamicFormView` reads
+/// from it.
 class App extends StatelessWidget {
   const App({super.key});
 
@@ -19,25 +19,26 @@ class App extends StatelessWidget {
         locale: const Locale('fa'),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        home: const _AppShellPlaceholder(),
+        home: const _HomePage(),
       ),
     );
   }
 }
 
-/// Stands in for `DynamicFormPage` until the presentation layer lands
-/// (branch `feat/application-presentation`) — proves the theme, RTL layout,
-/// and localization delegates are wired correctly before any form code
-/// depends on them.
-class _AppShellPlaceholder extends StatelessWidget {
-  const _AppShellPlaceholder();
+/// The one page in this repo. `dynamic_form` is a shared module, not a
+/// feature with its own route (see the plan doc's `core`/`shared`/
+/// `features` section) — this is the host a real subject page would
+/// otherwise be, owning the `Scaffold`/`AppBar` while `DynamicFormView`
+/// owns everything inside it.
+class _HomePage extends StatelessWidget {
+  const _HomePage();
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(title: Text(l10n.appTitle)),
-      body: Center(child: Text(l10n.stateLoading)),
+      body: const DynamicFormView(),
     );
   }
 }

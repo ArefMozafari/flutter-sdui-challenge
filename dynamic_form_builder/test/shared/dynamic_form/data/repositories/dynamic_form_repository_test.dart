@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:dynamic_form_builder/features/dynamic_form/data/datasources/datasource_exceptions.dart';
-import 'package:dynamic_form_builder/features/dynamic_form/data/datasources/dynamic_form_datasource.dart';
-import 'package:dynamic_form_builder/features/dynamic_form/data/repositories/dynamic_form_repository.dart';
-import 'package:dynamic_form_builder/features/dynamic_form/domain/failures/failure.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/data/datasources/datasource_exceptions.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/data/datasources/dynamic_form_datasource.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/data/repositories/dynamic_form_repository.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/failures/failure.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// No `implements` interface needed on the production side (see

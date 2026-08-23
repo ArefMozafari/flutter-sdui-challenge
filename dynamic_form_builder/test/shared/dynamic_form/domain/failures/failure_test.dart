@@ -1,4 +1,4 @@
-import 'package:dynamic_form_builder/features/dynamic_form/domain/failures/failure.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/failures/failure.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// Exhaustively pattern-matches every [Failure] subtype. If a new subtype

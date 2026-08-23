@@ -24,10 +24,10 @@ abstract class DynamicFormDataSource {
 
 /// One file to upload, keyed to the form field it belongs to.
 ///
-/// Distinct from Domain's `SelectedFileMeta`: that's metadata-only, enough
-/// to validate against `FieldValidation` without Domain ever touching
-/// bytes. This carries the actual bytes, because building a multipart
-/// request is Data's job.
+/// Distinct from Domain's `SelectedFile`: that one is grouped implicitly by
+/// its position in a `Map<String, FieldValue>` (no field name needed
+/// inside it). This is the flat, wire-ready shape `submitForm` sends as one
+/// list across every field, so it needs [fieldName] carried explicitly.
 class SubmissionFile {
   const SubmissionFile({
     required this.fieldName,
