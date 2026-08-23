@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
-import '../tokens/app_spacing.dart';
-import '../tokens/app_typography.dart';
+import 'package:dynamic_form_builder/core/design_system/tokens/app_spacing.dart';
+import 'package:dynamic_form_builder/core/design_system/tokens/app_typography.dart';
 
 /// Size vocabulary shared by every input component in the design system.
 ///
@@ -17,14 +17,14 @@ enum DsFieldSize {
   large;
 
   TextStyle get textStyle => switch (this) {
-        DsFieldSize.small => AppTypography.fieldTextSmall,
-        DsFieldSize.medium => AppTypography.fieldTextMedium,
-        DsFieldSize.large => AppTypography.fieldTextLarge,
-      };
+    DsFieldSize.small => AppTypography.fieldTextSmall,
+    DsFieldSize.medium => AppTypography.fieldTextMedium,
+    DsFieldSize.large => AppTypography.fieldTextLarge,
+  };
 
   double get verticalPadding => switch (this) {
-        DsFieldSize.small => AppSpacing.sm,
-        DsFieldSize.medium => AppSpacing.md,
-        DsFieldSize.large => AppSpacing.lg,
-      };
+    DsFieldSize.small => AppSpacing.sm,
+    DsFieldSize.medium => AppSpacing.md,
+    DsFieldSize.large => AppSpacing.lg,
+  };
 }

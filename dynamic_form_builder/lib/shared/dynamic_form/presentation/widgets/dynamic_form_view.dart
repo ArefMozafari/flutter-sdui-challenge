@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/design_system/components/ds_button.dart';
-import '../../../../core/design_system/tokens/app_colors.dart';
-import '../../../../core/design_system/tokens/app_spacing.dart';
-import '../../../../core/l10n/app_localizations.dart';
-import '../../domain/failures/failure.dart';
-import '../controllers/dynamic_form_controller.dart';
-import '../states/dynamic_form_view_state.dart';
-import 'failure_message_resolver.dart';
-import 'field_widget_registry.dart';
+import 'package:dynamic_form_builder/core/design_system/components/ds_button.dart';
+import 'package:dynamic_form_builder/core/design_system/tokens/app_colors.dart';
+import 'package:dynamic_form_builder/core/design_system/tokens/app_spacing.dart';
+import 'package:dynamic_form_builder/core/l10n/app_localizations.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/failures/failure.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/presentation/controllers/dynamic_form_controller.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/presentation/states/dynamic_form_view_state.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/presentation/widgets/failure_message_resolver.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/presentation/widgets/field_widget_registry.dart';
 
 /// The composable content of `dynamic_form` — not a `Page`. It has no
 /// `Scaffold`, no `AppBar`, no route of its own: whoever hosts it (a

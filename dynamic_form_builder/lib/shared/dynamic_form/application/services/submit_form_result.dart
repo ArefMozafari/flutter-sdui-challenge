@@ -1,5 +1,5 @@
-import '../../domain/failures/failure.dart';
-import '../../domain/validation/validation_result.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/failures/failure.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/validation/validation_result.dart';
 
 /// The outcome of [DynamicFormService.submitForm][dynamic_form_service.dart].
 ///

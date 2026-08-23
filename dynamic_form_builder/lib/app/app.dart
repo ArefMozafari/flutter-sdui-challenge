@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../core/design_system/theme/app_theme.dart';
-import '../core/l10n/app_localizations.dart';
-import '../shared/dynamic_form/presentation/widgets/dynamic_form_view.dart';
+import 'package:dynamic_form_builder/core/design_system/theme/app_theme.dart';
+import 'package:dynamic_form_builder/core/l10n/app_localizations.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/presentation/widgets/dynamic_form_view.dart';
 
 /// App root. `ProviderScope` is wired here since `DynamicFormView` reads
 /// from it.

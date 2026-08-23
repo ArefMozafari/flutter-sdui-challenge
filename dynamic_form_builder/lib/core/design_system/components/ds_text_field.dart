@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'ds_field_label.dart';
-import 'ds_field_size.dart';
+import 'package:dynamic_form_builder/core/design_system/components/ds_field_label.dart';
+import 'package:dynamic_form_builder/core/design_system/components/ds_field_size.dart';
 
 /// Single- or multi-line text input. Owns its own [TextEditingController] so
 /// the caller's rebuilds (e.g. a Riverpod state change on an unrelated
@@ -39,8 +39,9 @@ class DsTextField extends StatefulWidget {
 }
 
 class _DsTextFieldState extends State<DsTextField> {
-  late final TextEditingController _controller =
-      TextEditingController(text: widget.initialValue);
+  late final TextEditingController _controller = TextEditingController(
+    text: widget.initialValue,
+  );
 
   @override
   void dispose() {

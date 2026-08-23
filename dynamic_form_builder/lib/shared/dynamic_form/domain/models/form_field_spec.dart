@@ -1,6 +1,6 @@
-import 'field_size_hint.dart';
-import 'field_validation.dart';
-import 'select_option.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/field_size_hint.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/field_validation.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/select_option.dart';
 
 /// One field in a [FormSpec], as a Dart 3 sealed hierarchy.
 ///

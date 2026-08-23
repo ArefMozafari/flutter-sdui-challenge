@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../tokens/app_spacing.dart';
-import 'ds_field_label.dart';
+import 'package:dynamic_form_builder/core/design_system/tokens/app_spacing.dart';
+import 'package:dynamic_form_builder/core/design_system/components/ds_field_label.dart';
 
 /// Purely presentational file-selection field: shows the currently selected
 /// file names and a trigger button. It never talks to `file_picker` (or any
@@ -63,7 +63,9 @@ class DsFilePicker extends StatelessWidget {
             padding: const EdgeInsets.only(top: AppSpacing.xs),
             child: Text(
               errorText!,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: scheme.error),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: scheme.error),
             ),
           ),
       ],

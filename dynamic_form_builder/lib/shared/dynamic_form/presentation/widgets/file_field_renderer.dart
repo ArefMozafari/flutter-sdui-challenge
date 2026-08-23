@@ -1,12 +1,12 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../core/design_system/components/ds_file_picker.dart';
-import '../../../../core/l10n/app_localizations.dart';
-import '../../domain/models/field_value.dart';
-import '../../domain/models/form_field_spec.dart';
-import '../../domain/validation/validation_result.dart';
-import 'validation_message_resolver.dart';
+import 'package:dynamic_form_builder/core/design_system/components/ds_file_picker.dart';
+import 'package:dynamic_form_builder/core/l10n/app_localizations.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/field_value.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/form_field_spec.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/validation/validation_result.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/presentation/widgets/validation_message_resolver.dart';
 
 /// Renders a [FileFieldSpec]. This is the one renderer that actually talks
 /// to a platform plugin (`file_picker`) — `DsFilePicker` itself is purely

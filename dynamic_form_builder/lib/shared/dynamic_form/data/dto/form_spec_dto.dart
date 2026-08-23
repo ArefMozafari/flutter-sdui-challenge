@@ -1,5 +1,5 @@
-import '../../domain/models/form_spec.dart';
-import 'form_field_spec_dto.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/form_spec.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/data/dto/form_field_spec_dto.dart';
 
 /// Parses the server's whole form response into a [FormSpec].
 ///

@@ -1,8 +1,8 @@
-import '../../domain/models/field_size_hint.dart';
-import '../../domain/models/field_validation.dart';
-import '../../domain/models/form_field_spec.dart';
-import '../../domain/models/select_option.dart';
-import 'style/server_style_resolver.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/field_size_hint.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/field_validation.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/form_field_spec.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/select_option.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/data/dto/style/server_style_resolver.dart';
 
 /// Parses one field of the server's `fields` array into a [FormFieldSpec].
 ///

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../tokens/app_spacing.dart';
+import 'package:dynamic_form_builder/core/design_system/tokens/app_spacing.dart';
 
 /// Label shown above a form field, with a consistent required-marker style.
 class DsFieldLabel extends StatelessWidget {
@@ -12,7 +12,9 @@ class DsFieldLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    final style = Theme.of(context).textTheme.labelLarge?.copyWith(color: scheme.onSurface);
+    final style = Theme.of(
+      context,
+    ).textTheme.labelLarge?.copyWith(color: scheme.onSurface);
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.sm),
       child: Text.rich(
@@ -20,7 +22,11 @@ class DsFieldLabel extends StatelessWidget {
           style: style,
           children: [
             TextSpan(text: text),
-            if (isRequired) TextSpan(text: ' *', style: TextStyle(color: scheme.error)),
+            if (isRequired)
+              TextSpan(
+                text: ' *',
+                style: TextStyle(color: scheme.error),
+              ),
           ],
         ),
       ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'ds_field_label.dart';
-import 'ds_field_size.dart';
+import 'package:dynamic_form_builder/core/design_system/components/ds_field_label.dart';
+import 'package:dynamic_form_builder/core/design_system/components/ds_field_size.dart';
 
 /// One selectable option: what the user sees ([label]) vs. what the caller
 /// gets back ([value]) — kept apart because a server-declared option's
@@ -48,11 +48,10 @@ class DsSelect<T> extends StatelessWidget {
         DropdownButtonFormField<T>(
           initialValue: value,
           onChanged: enabled ? onChanged : null,
-          style: size.textStyle.copyWith(color: Theme.of(context).colorScheme.onSurface),
-          decoration: InputDecoration(
-            hintText: hintText,
-            errorText: errorText,
+          style: size.textStyle.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
           ),
+          decoration: InputDecoration(hintText: hintText, errorText: errorText),
           items: [
             for (final option in options)
               DropdownMenuItem(value: option.value, child: Text(option.label)),

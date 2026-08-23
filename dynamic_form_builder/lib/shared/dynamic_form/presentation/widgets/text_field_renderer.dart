@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/design_system/components/ds_text_field.dart';
-import '../../../../core/l10n/app_localizations.dart';
-import '../../domain/models/field_value.dart';
-import '../../domain/models/form_field_spec.dart';
-import '../../domain/validation/validation_result.dart';
-import 'field_size_hint_mapping.dart';
-import 'validation_message_resolver.dart';
+import 'package:dynamic_form_builder/core/design_system/components/ds_text_field.dart';
+import 'package:dynamic_form_builder/core/l10n/app_localizations.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/field_value.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/form_field_spec.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/validation/validation_result.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/presentation/widgets/field_size_hint_mapping.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/presentation/widgets/validation_message_resolver.dart';
 
 /// Renders both [TextFieldSpec] and [MultilineFieldSpec] — same widget
 /// (`DsTextField`), same value type ([TextValue]), the only difference is

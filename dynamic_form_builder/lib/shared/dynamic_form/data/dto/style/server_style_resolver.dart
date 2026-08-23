@@ -1,4 +1,4 @@
-import '../../../domain/models/field_size_hint.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/field_size_hint.dart';
 
 /// Resolves whatever size signal a server field carries into a
 /// [FieldSizeHint] — never a raw pixel or hex value.
