@@ -44,7 +44,5 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-# Generated code — regenerate with `flutter pub get` (l10n) and
-# `dart run build_runner build --delete-conflicting-outputs` (riverpod)
+# Generated code — regenerate with `flutter pub get`
 lib/core/l10n/app_localizations*.dart
-**/*.g.dart
