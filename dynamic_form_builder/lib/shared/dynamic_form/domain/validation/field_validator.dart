@@ -71,14 +71,14 @@ ValidationResult _validateText(FieldValidation rules, TextValue value) {
   if (minLength != null && text.length < minLength) {
     return ValidationResult.invalid(
       'validationMinLength',
-      args: {'min': '$minLength'},
+      args: {'min': minLength},
     );
   }
   final maxLength = rules.maxLength;
   if (maxLength != null && text.length > maxLength) {
     return ValidationResult.invalid(
       'validationMaxLength',
-      args: {'max': '$maxLength'},
+      args: {'max': maxLength},
     );
   }
   return const ValidationResult.valid();
@@ -95,11 +95,11 @@ ValidationResult _validateNumber(FieldValidation rules, NumberValue value) {
   }
   final min = rules.min;
   if (min != null && number < min) {
-    return ValidationResult.invalid('validationMin', args: {'min': '$min'});
+    return ValidationResult.invalid('validationMin', args: {'min': min});
   }
   final max = rules.max;
   if (max != null && number > max) {
-    return ValidationResult.invalid('validationMax', args: {'max': '$max'});
+    return ValidationResult.invalid('validationMax', args: {'max': max});
   }
   return const ValidationResult.valid();
 }
@@ -122,7 +122,7 @@ ValidationResult _validateFiles(FieldValidation rules, FileValue value) {
   if (maxFiles != null && files.length > maxFiles) {
     return ValidationResult.invalid(
       'validationTooManyFiles',
-      args: {'max': '$maxFiles'},
+      args: {'max': maxFiles},
     );
   }
 
