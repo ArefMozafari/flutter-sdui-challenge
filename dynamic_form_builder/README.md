@@ -23,9 +23,10 @@ There's no real backend: `MockDynamicFormDataSource` serves
 `assets/mock/car_listing_form.json` in place of a network call, with
 configurable latency and injectable failure modes (network/timeout/
 server-500/malformed-body) so every error state has something real behind
-it. Swapping to a real backend is one line — `DataSourceImplementation.mock`
-→ `.http` in `dynamicFormRepositoryProvider`
-(`shared/dynamic_form/data/repositories/dynamic_form_repository.dart`).
+it. Swapping to a real backend is one line, in `dynamicFormDataSourceProvider`
+(`shared/dynamic_form/data/datasources/dynamic_form_datasource.dart`) —
+return a `HttpDynamicFormDataSource` there instead of
+`MockDynamicFormDataSource`.
 
 ## Architecture
 
@@ -102,12 +103,27 @@ the codebase lands you directly on the thing it provides, zero hops. The
 one case that can't colocate with "the" class is
 `dynamicFormDataSourceProvider`: `DynamicFormDataSource` is abstract with
 two real implementations, so there's no single class to colocate with. It's
-a `Provider.family`, declared beside the abstract definition itself
-(`dynamic_form_datasource.dart`) rather than either implementation —
-`Command+Click` lands beside the interface, with both `mock` and `http`
-branches visible right there. `DynamicFormController` used `@riverpod`
-code-gen briefly; it's hand-written now for the same zero-hop reason and to
-keep this rule exception-free everywhere except the one abstract case above.
+declared beside the abstract definition itself (`dynamic_form_datasource.dart`)
+rather than either implementation — `Command+Click` lands beside the
+interface, and its own doc comment says exactly which line to change to go
+live. `DynamicFormController` used `@riverpod` code-gen briefly; it's
+hand-written now for the same zero-hop reason and to keep this rule
+exception-free everywhere except the one abstract case above.
+
+`dynamicFormDataSourceProvider` briefly was a `Provider.family` keyed by an
+enum naming the same two implementations again — reverted, since nothing
+in this app ever watches the *other* branch: there's exactly one caller,
+and it always wants whichever implementation the provider body currently
+returns. A plain provider body is exactly as swappable with far less
+machinery.
+
+`DynamicFormDataSource` stays plain `abstract`, not `sealed`, even though
+every other closed set of variants in this codebase is sealed — that's a
+real constraint, not a style choice: `sealed` restricts `extends`/
+`implements` to the declaring library, and every test fake
+(`class _FakeDataSource implements DynamicFormDataSource`) lives in a test
+file, a different library. Sealing this class would make every one of
+those fakes a compile error.
 
 ### Other decisions worth knowing before reading the code
 

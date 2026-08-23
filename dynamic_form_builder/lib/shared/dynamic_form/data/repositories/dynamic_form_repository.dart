@@ -9,14 +9,13 @@ import 'package:dynamic_form_builder/shared/dynamic_form/data/dto/form_spec_dto.
 import 'package:dynamic_form_builder/shared/dynamic_form/domain/failures/failure.dart';
 import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/form_spec.dart';
 
-/// The actual mock↔real swap point: change `DataSourceImplementation.mock`
-/// to `.http` right here to go live. Declared beside the class it
-/// constructs, like every other provider in this codebase — `Command+Click`
-/// on a call site lands directly on [DynamicFormRepository].
+/// Declared beside the class it constructs, like every other provider in
+/// this codebase — `Command+Click` on a call site lands directly on
+/// [DynamicFormRepository]. The mock↔real swap point lives one level down,
+/// in [dynamicFormDataSourceProvider] — see that provider's own doc
+/// comment for why it isn't here instead.
 final dynamicFormRepositoryProvider = Provider<DynamicFormRepository>((ref) {
-  return DynamicFormRepository(
-    ref.watch(dynamicFormDataSourceProvider(DataSourceImplementation.mock)),
-  );
+  return DynamicFormRepository(ref.watch(dynamicFormDataSourceProvider));
 });
 
 /// Composes a [DynamicFormDataSource] with DTO mapping — the one place
