@@ -1,11 +1,40 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:dynamic_form_builder/core/network/api_client.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/data/datasources/http_dynamic_form_datasource.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/data/datasources/mock_dynamic_form_datasource.dart';
+
+/// Which [DynamicFormDataSource] a caller of [dynamicFormDataSourceProvider]
+/// wants. A family provider, not a plain one overridden per-environment: the
+/// choice is explicit at the one place it's actually consumed
+/// (`dynamicFormRepositoryProvider`, in `dynamic_form_repository.dart`)
+/// rather than implicit in whatever override happens to be active.
+enum DataSourceImplementation { mock, http }
+
+/// Declared beside the interface it provides, not either implementation —
+/// there's no single class for `Command+Click` to land on, since this
+/// genuinely constructs one of two. `mock`/`http` are both visible right
+/// here, next to [DynamicFormDataSource] itself, rather than hidden behind
+/// a provider override somewhere else.
+final dynamicFormDataSourceProvider =
+    Provider.family<DynamicFormDataSource, DataSourceImplementation>((
+      ref,
+      implementation,
+    ) {
+      return switch (implementation) {
+        DataSourceImplementation.mock => MockDynamicFormDataSource(),
+        DataSourceImplementation.http => HttpDynamicFormDataSource(
+          ref.watch(apiClientProvider),
+          formPath: '/api/forms/car_listing',
+        ),
+      };
+    });
+
 /// The one point where this app talks to a server.
 ///
-/// Unlike [DynamicFormRepository][../repositories/dynamic_form_repository.dart],
-/// this genuinely has two real implementations —
-/// [MockDynamicFormDataSource][mock_dynamic_form_datasource.dart] and
-/// [HttpDynamicFormDataSource][http_dynamic_form_datasource.dart] — that
-/// must be interchangeable at runtime via a single Riverpod provider
-/// override, not just swappable in tests. That's what earns the explicit
+/// Unlike `DynamicFormRepository`, this genuinely has two real
+/// implementations — [MockDynamicFormDataSource] and
+/// [HttpDynamicFormDataSource] — that's what earns the explicit
 /// `abstract class` here, where the Repository (one real implementation)
 /// does without one.
 ///

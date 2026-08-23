@@ -1,12 +1,23 @@
 import 'dart:async';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 
-import '../../domain/failures/failure.dart';
-import '../../domain/models/form_spec.dart';
-import '../datasources/datasource_exceptions.dart';
-import '../datasources/dynamic_form_datasource.dart';
-import '../dto/form_spec_dto.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/data/datasources/datasource_exceptions.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/data/datasources/dynamic_form_datasource.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/data/dto/form_spec_dto.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/failures/failure.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/form_spec.dart';
+
+/// The actual mock↔real swap point: change `DataSourceImplementation.mock`
+/// to `.http` right here to go live. Declared beside the class it
+/// constructs, like every other provider in this codebase — `Command+Click`
+/// on a call site lands directly on [DynamicFormRepository].
+final dynamicFormRepositoryProvider = Provider<DynamicFormRepository>((ref) {
+  return DynamicFormRepository(
+    ref.watch(dynamicFormDataSourceProvider(DataSourceImplementation.mock)),
+  );
+});
 
 /// Composes a [DynamicFormDataSource] with DTO mapping — the one place
 /// wire data crosses into Domain shapes.
@@ -15,8 +26,11 @@ import '../dto/form_spec_dto.dart';
 /// one Repository implementation, so Dart classes being implicitly their
 /// own interface is enough — `class FakeDynamicFormRepository implements
 /// DynamicFormRepository` works in tests without a separate `abstract
-/// class` declaration earning no real cost reduction. The actual test seam
-/// is Riverpod's provider override, not a hand-rolled interface.
+/// class` declaration earning no real cost reduction. In practice, tests
+/// that only need Presentation working end-to-end override
+/// [dynamicFormRepositoryProvider] directly with a real `DynamicFormRepository`
+/// wrapping a fake `DynamicFormDataSource`; tests of the Repository itself
+/// just construct one by hand — no override machinery needed either way.
 ///
 /// Every method returns `Either<Failure, T>` (fpdart). `try`/`catch`
 /// happens exactly once per method, right here — this is the one boundary

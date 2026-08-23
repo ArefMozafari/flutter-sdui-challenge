@@ -1,11 +1,19 @@
-import '../../data/datasources/dynamic_form_datasource.dart';
-import '../../data/repositories/dynamic_form_repository.dart';
-import '../../domain/models/field_value.dart';
-import '../../domain/models/form_field_spec.dart';
-import '../../domain/models/form_spec.dart';
-import '../../domain/validation/field_validator.dart';
-import '../../domain/validation/validation_result.dart';
-import 'submit_form_result.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:dynamic_form_builder/shared/dynamic_form/application/services/submit_form_result.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/data/datasources/dynamic_form_datasource.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/data/repositories/dynamic_form_repository.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/field_value.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/form_field_spec.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/form_spec.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/validation/field_validator.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/validation/validation_result.dart';
+
+/// Declared beside the class it provides — `Command+Click` on a call site
+/// lands directly on [DynamicFormService].
+final dynamicFormServiceProvider = Provider<DynamicFormService>((ref) {
+  return DynamicFormService(ref.watch(dynamicFormRepositoryProvider));
+});
 
 /// Validates the whole form, then submits it. This is the one operation of
 /// `dynamic_form` kept behind Application rather than skipped straight to

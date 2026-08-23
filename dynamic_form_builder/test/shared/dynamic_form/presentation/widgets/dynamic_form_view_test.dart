@@ -1,7 +1,7 @@
-import 'package:dynamic_form_builder/app/di.dart';
 import 'package:dynamic_form_builder/core/l10n/app_localizations.dart';
 import 'package:dynamic_form_builder/shared/dynamic_form/data/datasources/datasource_exceptions.dart';
 import 'package:dynamic_form_builder/shared/dynamic_form/data/datasources/dynamic_form_datasource.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/data/repositories/dynamic_form_repository.dart';
 import 'package:dynamic_form_builder/shared/dynamic_form/presentation/widgets/dynamic_form_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -55,7 +55,11 @@ class _FakeDataSource implements DynamicFormDataSource {
 
 Widget _harness(_FakeDataSource dataSource) {
   return ProviderScope(
-    overrides: [dynamicFormDataSourceProvider.overrideWithValue(dataSource)],
+    overrides: [
+      dynamicFormRepositoryProvider.overrideWithValue(
+        DynamicFormRepository(dataSource),
+      ),
+    ],
     child: MaterialApp(
       locale: const Locale('en'),
       localizationsDelegates: AppLocalizations.localizationsDelegates,

@@ -1,14 +1,23 @@
 import 'dart:async';
 
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../app/di.dart';
-import '../../application/services/submit_form_result.dart';
-import '../../domain/models/field_value.dart';
-import '../../domain/models/form_spec.dart';
-import '../states/dynamic_form_view_state.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/application/services/dynamic_form_service.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/application/services/submit_form_result.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/data/repositories/dynamic_form_repository.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/field_value.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/form_spec.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/presentation/states/dynamic_form_view_state.dart';
 
-part 'dynamic_form_controller.g.dart';
+/// Declared here, above the class it provides, rather than generated —
+/// `Command+Click` lands directly on [DynamicFormController] with zero
+/// hops. Kept alive for the app's lifetime rather than `.autoDispose`:
+/// this repo has exactly one screen, always mounted, so there's no point
+/// in the app where disposing the form's state would ever be correct.
+final dynamicFormControllerProvider =
+    NotifierProvider<DynamicFormController, DynamicFormViewState>(
+      DynamicFormController.new,
+    );
 
 /// Owns the form's lifecycle: fetch on load, hold field values as the user
 /// types/picks, validate-and-submit on demand.
@@ -18,8 +27,7 @@ part 'dynamic_form_controller.g.dart';
 /// submit. See the plan doc's "Skipping a boilerplate-only layer": fetching
 /// has nothing for a Service to add, submitting does (validation +
 /// Domain-to-Data translation), so only one of the two skips Application.
-@riverpod
-class DynamicFormController extends _$DynamicFormController {
+class DynamicFormController extends Notifier<DynamicFormViewState> {
   @override
   DynamicFormViewState build() {
     unawaited(_load());
