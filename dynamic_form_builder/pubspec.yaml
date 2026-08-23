@@ -71,6 +71,13 @@ flutter:
   # Generates AppLocalizations from lib/core/l10n/*.arb (see l10n.yaml).
   generate: true
 
+  # Fixtures for MockDynamicFormDataSource — car_listing_form.json is the
+  # restructured shape the mock actually serves; legacy_form.json is the
+  # README's original sample response verbatim, kept only to prove the
+  # data/dto compatibility shim parses it.
+  assets:
+    - assets/mock/
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
