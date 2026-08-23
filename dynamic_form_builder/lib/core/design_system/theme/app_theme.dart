@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../tokens/app_colors.dart';
-import '../tokens/app_motion.dart';
-import '../tokens/app_radius.dart';
-import '../tokens/app_spacing.dart';
-import '../tokens/app_typography.dart';
+import 'package:dynamic_form_builder/core/design_system/tokens/app_colors.dart';
+import 'package:dynamic_form_builder/core/design_system/tokens/app_motion.dart';
+import 'package:dynamic_form_builder/core/design_system/tokens/app_radius.dart';
+import 'package:dynamic_form_builder/core/design_system/tokens/app_spacing.dart';
+import 'package:dynamic_form_builder/core/design_system/tokens/app_typography.dart';
 
 /// Builds [ThemeData] from the token layer. Every value below traces back to
 /// a token — nothing here is a raw literal — so a token change reflows the
@@ -69,17 +69,16 @@ abstract final class AppTheme {
 
   static PageTransitionsTheme _pageTransitions() {
     const builder = FadeForwardsPageTransitionsBuilder();
-    return const PageTransitionsTheme(builders: {
-      TargetPlatform.iOS: builder,
-      TargetPlatform.android: builder,
-    });
+    return const PageTransitionsTheme(
+      builders: {TargetPlatform.iOS: builder, TargetPlatform.android: builder},
+    );
   }
 
   static InputDecorationTheme _inputDecorationTheme(ColorScheme scheme) {
     OutlineInputBorder border(Color color) => OutlineInputBorder(
-          borderRadius: AppRadius.mdAll,
-          borderSide: BorderSide(color: color),
-        );
+      borderRadius: AppRadius.mdAll,
+      borderSide: BorderSide(color: color),
+    );
     return InputDecorationTheme(
       filled: true,
       fillColor: scheme.surfaceContainerHighest.withValues(alpha: 0.3),
@@ -93,7 +92,9 @@ abstract final class AppTheme {
       errorBorder: border(scheme.error),
       focusedErrorBorder: border(scheme.error),
       labelStyle: TextStyle(color: scheme.onSurfaceVariant),
-      helperStyle: AppTypography.fieldTextSmall.copyWith(color: scheme.onSurfaceVariant),
+      helperStyle: AppTypography.fieldTextSmall.copyWith(
+        color: scheme.onSurfaceVariant,
+      ),
       errorStyle: AppTypography.fieldTextSmall.copyWith(color: scheme.error),
     );
   }

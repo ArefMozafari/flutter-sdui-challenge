@@ -1,8 +1,8 @@
-import '../../application/services/submit_form_result.dart';
-import '../../domain/failures/failure.dart';
-import '../../domain/models/field_value.dart';
-import '../../domain/models/form_spec.dart';
-import '../../domain/validation/validation_result.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/application/services/submit_form_result.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/failures/failure.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/field_value.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/form_spec.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/validation/validation_result.dart';
 
 /// What `DynamicFormView` renders, owned by Presentation — sealed for the
 /// same compile-time-exhaustiveness reason as `FormFieldSpec` and

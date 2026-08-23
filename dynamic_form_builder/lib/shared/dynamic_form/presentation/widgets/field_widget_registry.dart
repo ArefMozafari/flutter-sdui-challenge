@@ -1,13 +1,13 @@
 import 'package:flutter/widgets.dart';
 
-import '../../domain/models/field_value.dart';
-import '../../domain/models/form_field_spec.dart';
-import '../../domain/validation/validation_result.dart';
-import 'file_field_renderer.dart';
-import 'number_field_renderer.dart';
-import 'select_field_renderer.dart';
-import 'text_field_renderer.dart';
-import 'unsupported_field_renderer.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/field_value.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/form_field_spec.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/validation/validation_result.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/presentation/widgets/file_field_renderer.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/presentation/widgets/number_field_renderer.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/presentation/widgets/select_field_renderer.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/presentation/widgets/text_field_renderer.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/presentation/widgets/unsupported_field_renderer.dart';
 
 typedef _Builder =
     Widget Function(

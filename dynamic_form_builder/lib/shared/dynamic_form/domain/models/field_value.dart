@@ -1,4 +1,4 @@
-import 'form_field_spec.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/form_field_spec.dart';
 
 /// What the user has entered into one field, as a Dart 3 sealed hierarchy
 /// mirroring [FormFieldSpec]. Sealed for the same reason as the spec: the

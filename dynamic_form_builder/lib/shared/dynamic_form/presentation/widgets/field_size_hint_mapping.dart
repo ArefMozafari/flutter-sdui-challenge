@@ -1,5 +1,5 @@
-import '../../../../core/design_system/components/ds_field_size.dart';
-import '../../domain/models/field_size_hint.dart';
+import 'package:dynamic_form_builder/core/design_system/components/ds_field_size.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/field_size_hint.dart';
 
 /// Maps Domain's [FieldSizeHint] onto the design system's [DsFieldSize].
 /// Presentation is the only layer allowed to depend on both Domain and

@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('boots with the Farsi title and RTL layout by default', (tester) async {
+  testWidgets('boots with the Farsi title and RTL layout by default', (
+    tester,
+  ) async {
     await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
 

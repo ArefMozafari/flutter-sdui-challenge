@@ -10,20 +10,22 @@ README](../README.md); this file covers the Flutter app itself.
 
 ```bash
 flutter pub get
-flutter gen-l10n                                              # generates lib/core/l10n/app_localizations*.dart
-dart run build_runner build --delete-conflicting-outputs      # generates *.g.dart (Riverpod)
+flutter gen-l10n      # generates lib/core/l10n/app_localizations*.dart
 flutter run
 ```
 
-Both generation steps are gitignored outputs — `flutter pub get` triggers
-the first automatically; the second needs the explicit `build_runner`
-invocation above. `flutter analyze && flutter test` is the verify command.
+`app_localizations*.dart` is a gitignored output — `flutter pub get`
+triggers `gen-l10n` automatically, the explicit step above is only needed
+if you edit an `.arb` file without touching `pubspec.yaml`.
+`flutter analyze && flutter test` is the verify command.
 
 There's no real backend: `MockDynamicFormDataSource` serves
 `assets/mock/car_listing_form.json` in place of a network call, with
 configurable latency and injectable failure modes (network/timeout/
 server-500/malformed-body) so every error state has something real behind
-it. Swapping to a real backend is one line, in `lib/app/di.dart`.
+it. Swapping to a real backend is one line — `DataSourceImplementation.mock`
+→ `.http` in `dynamicFormRepositoryProvider`
+(`shared/dynamic_form/data/repositories/dynamic_form_repository.dart`).
 
 ## Architecture
 
@@ -50,7 +52,7 @@ or Presentation.
 
 ```
 lib/
-├── app/                # MaterialApp, theme, l10n wiring, provider overrides (di.dart)
+├── app/                # MaterialApp, theme, l10n wiring — no providers of its own (see below)
 ├── core/                # generic infra with zero domain knowledge — could ship in any app unchanged
 │   ├── design_system/   # tokens → theme → components
 │   ├── network/          # ApiClient (dio) — transport only
@@ -91,6 +93,22 @@ through `DynamicFormService` for `submitForm`, which validates-then-
 short-circuits and translates Domain-shaped input into Data-shaped
 `SubmissionFile`s — real work a Service earns its keep doing.
 
+### Provider colocation
+
+Every `*Provider` is declared at the top of the file that defines the class
+it constructs, immediately above that class — never centralized into one
+`providers.dart`/`di.dart`. `Command+Click` on a provider used anywhere in
+the codebase lands you directly on the thing it provides, zero hops. The
+one case that can't colocate with "the" class is
+`dynamicFormDataSourceProvider`: `DynamicFormDataSource` is abstract with
+two real implementations, so there's no single class to colocate with. It's
+a `Provider.family`, declared beside the abstract definition itself
+(`dynamic_form_datasource.dart`) rather than either implementation —
+`Command+Click` lands beside the interface, with both `mock` and `http`
+branches visible right there. `DynamicFormController` used `@riverpod`
+code-gen briefly; it's hand-written now for the same zero-hop reason and to
+keep this rule exception-free everywhere except the one abstract case above.
+
 ### Other decisions worth knowing before reading the code
 
 - **`DynamicFormRepository` has no abstract interface; `DynamicFormDataSource`
@@ -98,8 +116,7 @@ short-circuits and translates Domain-shaped input into Data-shaped
   implicitly their own interface, so a test fake needs no separate
   `abstract class`. DataSource genuinely has two real implementations
   (`MockDynamicFormDataSource`, `HttpDynamicFormDataSource`) that must be
-  swappable at runtime via one Riverpod provider override — that's where
-  the abstraction earns its cost.
+  swappable at runtime — that's where the abstraction earns its cost.
 - **Sealed classes end-to-end**: `FormFieldSpec`, `FieldValue`, `Failure`,
   `ValidationResult`, `DynamicFormViewState` are all sealed. Add a case and
   every `switch` touching it fails to compile until handled — except:

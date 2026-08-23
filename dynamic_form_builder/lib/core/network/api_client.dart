@@ -1,4 +1,13 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+/// There's no real backend anywhere in this challenge (see
+/// `HttpDynamicFormDataSource`'s own doc comment), so [baseUrl] is a
+/// placeholder — update it here, in the one place `ApiClient` is
+/// constructed, once a real one exists.
+final apiClientProvider = Provider<ApiClient>((ref) {
+  return ApiClient(baseUrl: 'https://example.com/api');
+});
 
 /// A thin wrapper around [Dio] — transport only. Deliberately has no idea
 /// `Failure` exists: it belongs to `core` precisely because it doesn't know

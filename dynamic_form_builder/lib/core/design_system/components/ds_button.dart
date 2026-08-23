@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../tokens/app_spacing.dart';
+import 'package:dynamic_form_builder/core/design_system/tokens/app_spacing.dart';
 
 /// Primary action button with a built-in loading state — every
 /// submit/retry/async-triggering button in the app uses this instead of

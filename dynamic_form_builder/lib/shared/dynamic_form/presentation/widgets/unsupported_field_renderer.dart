@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../core/design_system/tokens/app_spacing.dart';
-import '../../../../core/l10n/app_localizations.dart';
-import '../../domain/models/form_field_spec.dart';
+import 'package:dynamic_form_builder/core/design_system/tokens/app_spacing.dart';
+import 'package:dynamic_form_builder/core/l10n/app_localizations.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/form_field_spec.dart';
 
 /// What renders for an [UnsupportedFieldSpec] — a server field type this
 /// build doesn't recognize. Visible in debug (so the gap is obvious while

@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 
-import '../../../../core/network/api_client.dart';
-import 'datasource_exceptions.dart';
-import 'dynamic_form_datasource.dart';
+import 'package:dynamic_form_builder/core/network/api_client.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/data/datasources/datasource_exceptions.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/data/datasources/dynamic_form_datasource.dart';
 
 /// The real counterpart to [MockDynamicFormDataSource] — structurally
 /// complete (GET the form, POST a multipart submission), but there is no

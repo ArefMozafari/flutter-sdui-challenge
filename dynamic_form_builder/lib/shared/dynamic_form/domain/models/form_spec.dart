@@ -1,4 +1,4 @@
-import 'form_field_spec.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/form_field_spec.dart';
 
 /// The whole form, as fetched from the server and restructured into the
 /// domain shape (see `dto/form_spec_dto.dart` for the wire mapping).

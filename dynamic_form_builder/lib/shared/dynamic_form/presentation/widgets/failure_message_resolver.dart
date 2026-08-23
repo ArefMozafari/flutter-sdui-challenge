@@ -1,5 +1,5 @@
-import '../../../../core/l10n/app_localizations.dart';
-import '../../domain/failures/failure.dart';
+import 'package:dynamic_form_builder/core/l10n/app_localizations.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/failures/failure.dart';
 
 /// Resolves a Domain [Failure] into user-facing text. A plain `switch` (not
 /// the key/args indirection [resolveValidationMessage] needs) works here

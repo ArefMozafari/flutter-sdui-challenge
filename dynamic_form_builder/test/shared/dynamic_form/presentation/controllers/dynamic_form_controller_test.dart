@@ -1,6 +1,6 @@
-import 'package:dynamic_form_builder/app/di.dart';
 import 'package:dynamic_form_builder/shared/dynamic_form/data/datasources/datasource_exceptions.dart';
 import 'package:dynamic_form_builder/shared/dynamic_form/data/datasources/dynamic_form_datasource.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/data/repositories/dynamic_form_repository.dart';
 import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/field_value.dart';
 import 'package:dynamic_form_builder/shared/dynamic_form/presentation/controllers/dynamic_form_controller.dart';
 import 'package:dynamic_form_builder/shared/dynamic_form/presentation/states/dynamic_form_view_state.dart';
@@ -45,7 +45,11 @@ class _FakeDataSource implements DynamicFormDataSource {
 
 ProviderContainer _containerWith(_FakeDataSource dataSource) {
   final container = ProviderContainer(
-    overrides: [dynamicFormDataSourceProvider.overrideWithValue(dataSource)],
+    overrides: [
+      dynamicFormRepositoryProvider.overrideWithValue(
+        DynamicFormRepository(dataSource),
+      ),
+    ],
   );
   addTearDown(container.dispose);
   return container;

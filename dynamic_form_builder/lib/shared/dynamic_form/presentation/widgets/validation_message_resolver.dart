@@ -1,5 +1,5 @@
-import '../../../../core/l10n/app_localizations.dart';
-import '../../domain/validation/validation_result.dart';
+import 'package:dynamic_form_builder/core/l10n/app_localizations.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/validation/validation_result.dart';
 
 /// Resolves a Domain [ValidationResult]'s key + args into real text via the
 /// generated [AppLocalizations] methods.

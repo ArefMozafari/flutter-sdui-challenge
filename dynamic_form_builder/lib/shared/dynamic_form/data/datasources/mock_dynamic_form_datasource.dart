@@ -3,8 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 
-import 'datasource_exceptions.dart';
-import 'dynamic_form_datasource.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/data/datasources/datasource_exceptions.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/data/datasources/dynamic_form_datasource.dart';
 
 /// A failure to simulate on the next call, so the app's error states are
 /// demonstrably built and exercised — not just assumed to work because the

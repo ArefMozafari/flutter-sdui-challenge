@@ -1,7 +1,7 @@
-import '../models/field_validation.dart';
-import '../models/field_value.dart';
-import '../models/form_field_spec.dart';
-import 'validation_result.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/field_validation.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/field_value.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/form_field_spec.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/domain/validation/validation_result.dart';
 
 /// Validates one field's current [FieldValue] against its [FormFieldSpec].
 ///
