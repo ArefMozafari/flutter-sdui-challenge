@@ -118,10 +118,18 @@ short-circuits and translates Domain-shaped input into Data-shaped
   does not attempt to reconstruct `props.color` or `style.borderRadius`
   into anything; those are pure presentation noise with no Domain concept
   to map onto, and are simply dropped.
-- **`HttpDynamicFormDataSource` is untested.** It exists so "DataSource has
-  two real implementations" is true rather than hypothetical, but there's
-  no real backend in this challenge to run it against, and a Dio-mocking
-  test would only re-assert its own logic back at itself.
+- **`HttpDynamicFormDataSource`'s network calls are untested; its request
+  building is.** There's no real backend in this challenge to run the
+  actual `get`/`postMultipart` calls against. But `buildSubmitFormData` —
+  turning `fields`/`files` into a multipart body — is pure Dart with no
+  I/O, so it's extracted to a top-level function and tested directly. That
+  test is what it looks like to take "there's nothing to test here"
+  seriously rather than as an excuse: the untested first version of this
+  file added files to the request as repeated `fieldName: file` map
+  entries, which silently kept only the *last* file for any field that
+  allows more than one (`car_images` allows up to 10) — a Dart map literal
+  drops earlier entries for a duplicate key. The test would have caught it
+  immediately; it does now if it regresses.
 - **Number field parsing is a documented simplification.** Text that
   doesn't parse as a number becomes an empty value rather than a distinct
   "invalid number" error — caught by the `required` check at submit time
@@ -158,10 +166,11 @@ typed and can't be called by string key.
 
 Unit tests sit next to the layer they cover — Domain (models, validation,
 failures), Data (DTO parsing including the legacy shim, style resolution,
-repository), Application (submit orchestration), Presentation (controller
-state transitions, and full widget-tree interaction through
-`DynamicFormView`: fill a field, pick a dropdown option, submit, see the
-result). `flutter test` runs all of them.
+repository, and `HttpDynamicFormDataSource`'s multipart body construction),
+Application (submit orchestration), Presentation (controller state
+transitions, and full widget-tree interaction through `DynamicFormView`:
+fill a field, pick a dropdown option, submit, see the result).
+`flutter test` runs all of them.
 
 ## Vocabulary
 
