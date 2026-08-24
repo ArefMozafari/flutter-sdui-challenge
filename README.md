@@ -4,6 +4,14 @@ Server-driven dynamic form: fetches a form's structure, renders text/number/mult
 fields, validates client-side, and submits it — including file uploads — back to the server. Built
 for the challenge in [task/README.md](task/README.md).
 
+- [Running it](#running-it)
+- [Architecture](#architecture)
+- [Design system](#design-system)
+- [Localization](#localization)
+- [Tests](#tests)
+- [Vocabulary](#vocabulary)
+- [AI usage](#ai-usage)
+
 ## Running it
 
 The Flutter app lives in `dynamic_form_builder/`:
@@ -57,5 +65,5 @@ Naming conventions and abbreviations used throughout the codebase:
 
 ## AI usage
 
-[ai.md](ai.md) is the written account. [ai-usage-notes.html](ai-usage-notes.html) is a
-browsable companion — the same real session log, colorized and easier to skim.
+[ai-usage-notes.html](ai-usage-notes.html) — the real session log, colorized and easier to
+skim than a raw transcript.
