@@ -21,6 +21,7 @@ String? resolveValidationMessage(
   final args = result.args;
   return switch (result.messageKey) {
     'validationRequired' => l10n.validationRequired,
+    'validationInvalidNumber' => l10n.validationInvalidNumber,
     'validationMinLength' => l10n.validationMinLength(args['min']! as int),
     'validationMaxLength' => l10n.validationMaxLength(args['max']! as int),
     'validationMin' => l10n.validationMin(args['min']! as num),

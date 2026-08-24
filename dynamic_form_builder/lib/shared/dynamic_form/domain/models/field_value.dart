@@ -32,11 +32,31 @@ final class TextValue extends FieldValue {
   final String text;
 }
 
-/// `number` is null when the field is empty (not yet typed, or cleared) —
-/// distinct from `0`, which is a legitimate value.
+/// `number` is null when the field holds no usable number — either it's
+/// empty (not yet typed, or cleared), or what's in it doesn't parse.
+/// Null is distinct from `0`, which is a legitimate value.
+///
+/// [text] is what the field is actually showing, and telling those two
+/// cases apart is the whole reason it's carried. `DsTextField` owns its
+/// controller and is the source of truth for the raw text after first build
+/// (deliberately — it's what stops an unrelated rebuild resetting the
+/// cursor), so without [text] here, state and screen diverge: typing `12a`
+/// left this holding `NumberValue(null)`, indistinguishable from empty,
+/// while the field went on displaying `12a`. A required field then reported
+/// "this field is required" over visible text, and an optional one dropped
+/// the value from the payload with no feedback at all.
 final class NumberValue extends FieldValue {
-  const NumberValue(this.number);
+  const NumberValue(this.number, {this.text = ''});
+
   final num? number;
+
+  /// The raw text this value was parsed from. Empty for a field the user
+  /// hasn't typed in, which is what makes "empty" distinguishable from
+  /// "unparsable" — see [validateField].
+  final String text;
+
+  /// True when the field visibly contains something that isn't a number.
+  bool get isUnparsable => number == null && text.trim().isNotEmpty;
 }
 
 /// `value` is null when nothing is selected yet.

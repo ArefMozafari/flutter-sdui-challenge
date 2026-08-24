@@ -9,12 +9,15 @@ import 'package:dynamic_form_builder/shared/dynamic_form/presentation/widgets/fi
 import 'package:dynamic_form_builder/shared/dynamic_form/presentation/widgets/validation_message_resolver.dart';
 
 /// Renders a [NumberFieldSpec] as a text field constrained to a numeric
-/// keyboard. Text that doesn't parse as a number becomes `NumberValue(null)`
-/// rather than a distinct "invalid number" state — a simplification: the
-/// `validationInvalidNumber` key exists for a future stricter mode, but
-/// today an unparsable number is caught by `required` at submit time like
-/// any other empty field, not flagged as a separate parse error while
-/// typing.
+/// keyboard.
+///
+/// Text that doesn't parse reports `validationInvalidNumber` at submit,
+/// not `validationRequired`. The value carries the raw text alongside the
+/// parsed number precisely so validation can tell "empty" from "has
+/// something in it that isn't a number" — see [NumberValue].
+///
+/// Nothing is flagged while typing: this form validates on submit, so a
+/// half-typed `-` or `1.` mustn't light up as an error mid-keystroke.
 ///
 /// Parsing goes through [parseLocalizedNumber], not `num.tryParse` directly —
 /// see that function for why a `fa`-default app can't use the bare one.
@@ -42,7 +45,11 @@ class NumberFieldRenderer extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     return DsTextField(
       label: spec.label,
-      onChanged: (text) => onChanged(NumberValue(parseLocalizedNumber(text))),
+      // Carry the raw text, not just the parse result: DsTextField goes on
+      // showing whatever was typed, so dropping it here is what let state
+      // and screen disagree about whether the field is empty.
+      onChanged: (text) =>
+          onChanged(NumberValue(parseLocalizedNumber(text), text: text)),
       initialValue: value.number?.toString(),
       hintText: spec.placeholder,
       errorText: resolveValidationMessage(l10n, error),
