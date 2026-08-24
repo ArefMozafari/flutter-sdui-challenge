@@ -44,6 +44,9 @@ dependencies:
     sdk: flutter
 
 dev_dependencies:
+  # Lets a test swap FilePickerPlatform.instance for a fake, so the file
+  # field's pick flow is reachable without a real picker.
+  plugin_platform_interface: ^2.1.8
   flutter_test:
     sdk: flutter
 
