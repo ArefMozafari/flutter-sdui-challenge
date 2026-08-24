@@ -167,7 +167,16 @@ List<SelectOption> _parseOptions(Object? raw) {
       .map(
         (o) => SelectOption(
           label: o['label'] as String,
-          value: o['value'].toString(),
+          // `as Object` before `toString()`, not `as String`. The coercion
+          // is deliberate — a server may send `"value": 1` and a numeric
+          // option value is legitimate — but `null.toString()` is the
+          // string "null", which used to become a real, selectable option
+          // submitted as `"null"`. Casting to the non-nullable Object
+          // throws on null exactly as the `label` cast above does, so a
+          // malformed option lands on the repository's TypeError branch
+          // and becomes a ParseFailure like every other bad payload,
+          // instead of silently slipping past it.
+          value: (o['value'] as Object).toString(),
         ),
       )
       .toList();
