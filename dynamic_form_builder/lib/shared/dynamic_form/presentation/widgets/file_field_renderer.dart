@@ -61,7 +61,15 @@ class _FileFieldRendererState extends State<FileFieldRenderer> {
           ),
         );
       }
-      widget.onChanged(FileValue([...widget.value.files, ...selected]));
+      widget.onChanged(
+        FileValue(
+          mergePickedFiles(
+            existing: widget.value.files,
+            picked: selected,
+            maxFiles: widget.spec.validation.maxFiles,
+          ),
+        ),
+      );
     } finally {
       if (mounted) setState(() => _isPicking = false);
     }
@@ -91,6 +99,32 @@ class _FileFieldRendererState extends State<FileFieldRenderer> {
       enabled: widget.enabled && !_isPicking,
     );
   }
+}
+
+/// What the field holds after a pick.
+///
+/// A single-file field **replaces**; anything else appends. Picking on a
+/// field that accepts one file means "this one instead" — appending there
+/// left the user holding two files after a change of mind, which validation
+/// then rejected at submit with "too many files", for a state the UI had
+/// invited them into. Escaping it meant finding the remove control.
+///
+/// Overflowing a *multi*-file field is deliberately left to submit-time
+/// validation instead of being capped here. That one is a real validation
+/// condition the user chose and can fix by removing files, and this form
+/// validates on submit by design. The single-file case isn't overflow at
+/// all — it's the interaction meaning something different from what the
+/// code did with it.
+///
+/// Pure and top-level so it can be tested without the platform picker,
+/// which is a static call with no seam to fake.
+List<SelectedFile> mergePickedFiles({
+  required List<SelectedFile> existing,
+  required List<SelectedFile> picked,
+  required int? maxFiles,
+}) {
+  if (maxFiles == 1) return picked;
+  return [...existing, ...picked];
 }
 
 /// `image/*` maps to the platform's native image picker; anything else
