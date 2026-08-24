@@ -122,4 +122,55 @@ void main() {
       expect(() => FormSpecDto.fromJson(json), throwsA(isA<TypeError>()));
     });
   });
+
+  group('select option values', () {
+    Map<String, dynamic> selectWith(List<Map<String, dynamic>> options) => {
+      'fields': [
+        {
+          'type': 'select',
+          'name': 'fuel',
+          'label': 'Fuel',
+          'options': options,
+          'validation': <String, dynamic>{},
+        },
+      ],
+    };
+
+    test('a null value throws rather than becoming the string "null"', () {
+      // It used to parse into a real, selectable option submitting "null",
+      // slipping past the repository's TypeError -> ParseFailure boundary.
+      expect(
+        () => FormSpecDto.fromJson(
+          selectWith([
+            {'label': 'Gasoline', 'value': null},
+          ]),
+        ),
+        throwsA(isA<TypeError>()),
+      );
+    });
+
+    test('a missing value key throws too', () {
+      expect(
+        () => FormSpecDto.fromJson(
+          selectWith([
+            {'label': 'Gasoline'},
+          ]),
+        ),
+        throwsA(isA<TypeError>()),
+      );
+    });
+
+    test('non-string scalars are still coerced, which is deliberate', () {
+      final field =
+          FormSpecDto.fromJson(
+                selectWith([
+                  {'label': 'One', 'value': 1},
+                  {'label': 'Yes', 'value': true},
+                ]),
+              ).fields.single
+              as SelectFieldSpec;
+
+      expect(field.options.map((o) => o.value), ['1', 'true']);
+    });
+  });
 }

@@ -107,6 +107,31 @@ void main() {
       expect(result.getLeft().toNullable(), isA<ParseFailure>());
     });
 
+    test('a null select option value maps to ParseFailure', () async {
+      // The other half of the DTO fix: stringifying null produced a
+      // perfectly valid spec, so this boundary never saw a problem and the
+      // form loaded with a selectable option whose value was "null".
+      final repo = DynamicFormRepository(
+        _FakeDataSource(
+          fetchResult: {
+            'fields': [
+              {
+                'type': 'select',
+                'name': 'fuel',
+                'label': 'Fuel',
+                'options': [
+                  {'label': 'Gasoline', 'value': null},
+                ],
+                'validation': <String, dynamic>{},
+              },
+            ],
+          },
+        ),
+      );
+      final result = await repo.fetchForm();
+      expect(result.getLeft().toNullable(), isA<ParseFailure>());
+    });
+
     test('any other error maps to UnexpectedFailure', () async {
       final repo = DynamicFormRepository(
         _FakeDataSource(fetchResult: StateError('boom')),
