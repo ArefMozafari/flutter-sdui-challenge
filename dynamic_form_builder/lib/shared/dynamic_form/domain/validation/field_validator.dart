@@ -59,7 +59,7 @@ Never _mismatch(FormFieldSpec spec, FieldValue value) => throw StateError(
 );
 
 ValidationResult _validateText(FieldValidation rules, TextValue value) {
-  final text = value.text.trim();
+  final text = value.trimmed;
 
   if (rules.required && text.isEmpty) {
     return const ValidationResult.invalid('validationRequired');

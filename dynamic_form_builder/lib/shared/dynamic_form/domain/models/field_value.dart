@@ -29,7 +29,21 @@ FieldValue initialFieldValue(FormFieldSpec spec) => switch (spec) {
 
 final class TextValue extends FieldValue {
   const TextValue(this.text);
+
+  /// Exactly what the field is showing, surrounding whitespace and all.
+  /// Kept raw so state never disagrees with the screen — the same reason
+  /// [NumberValue] carries its text.
   final String text;
+
+  /// What the field *means*: [text] without surrounding whitespace.
+  ///
+  /// Every consumer that treats this value as an answer — measuring its
+  /// length, or putting it on the wire — reads this rather than [text], so
+  /// there is one definition of the answer instead of one per caller.
+  /// Validation used to trim while submission sent [text] verbatim, so
+  /// `"  ab  "` was measured as two characters against `minLength` and
+  /// then transmitted as six.
+  String get trimmed => text.trim();
 }
 
 /// `number` is null when the field holds no usable number — either it's
