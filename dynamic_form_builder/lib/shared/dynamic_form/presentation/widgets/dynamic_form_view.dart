@@ -8,6 +8,7 @@ import 'package:dynamic_form_builder/core/l10n/app_localizations.dart';
 import 'package:dynamic_form_builder/shared/dynamic_form/domain/failures/failure.dart';
 import 'package:dynamic_form_builder/shared/dynamic_form/presentation/controllers/dynamic_form_controller.dart';
 import 'package:dynamic_form_builder/shared/dynamic_form/presentation/states/dynamic_form_view_state.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/presentation/states/submit_status.dart';
 import 'package:dynamic_form_builder/shared/dynamic_form/presentation/widgets/failure_message_resolver.dart';
 import 'package:dynamic_form_builder/shared/dynamic_form/presentation/widgets/field_widget_registry.dart';
 
@@ -83,13 +84,13 @@ class _LoadedView extends ConsumerWidget {
 
     return Column(
       children: [
-        if (state.submitFailure != null)
+        if (state.status case SubmitFailed(:final failure))
           _Banner(
-            text: resolveFailureMessage(l10n, state.submitFailure!),
+            text: resolveFailureMessage(l10n, failure),
             background: Theme.of(context).colorScheme.errorContainer,
             foreground: Theme.of(context).colorScheme.onErrorContainer,
           ),
-        if (state.submitSucceeded)
+        if (state.status is SubmitSucceeded)
           _Banner(
             text: l10n.stateSubmitSuccess,
             background: AppColors.success,

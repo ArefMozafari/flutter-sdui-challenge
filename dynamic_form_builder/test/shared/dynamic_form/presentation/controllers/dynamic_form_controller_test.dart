@@ -4,6 +4,7 @@ import 'package:dynamic_form_builder/shared/dynamic_form/data/repositories/dynam
 import 'package:dynamic_form_builder/shared/dynamic_form/domain/models/field_value.dart';
 import 'package:dynamic_form_builder/shared/dynamic_form/presentation/controllers/dynamic_form_controller.dart';
 import 'package:dynamic_form_builder/shared/dynamic_form/presentation/states/dynamic_form_view_state.dart';
+import 'package:dynamic_form_builder/shared/dynamic_form/presentation/states/submit_status.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -111,8 +112,8 @@ void main() {
     expect(dataSource.submitCalled, isFalse);
     final loaded =
         container.read(dynamicFormControllerProvider) as DynamicFormLoaded;
+    expect(loaded.status, isA<SubmitRejected>());
     expect(loaded.fieldErrors, contains('brand'));
-    expect(loaded.isSubmitting, isFalse);
   });
 
   test('submit with valid data reaches the datasource and succeeds', () async {
@@ -127,8 +128,7 @@ void main() {
     expect(dataSource.submitCalled, isTrue);
     final loaded =
         container.read(dynamicFormControllerProvider) as DynamicFormLoaded;
-    expect(loaded.submitSucceeded, isTrue);
-    expect(loaded.isSubmitting, isFalse);
+    expect(loaded.status, isA<SubmitSucceeded>());
   });
 
   test('retryLoad resets to loading before reloading', () async {
