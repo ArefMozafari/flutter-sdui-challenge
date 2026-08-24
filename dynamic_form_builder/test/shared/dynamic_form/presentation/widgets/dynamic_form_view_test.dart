@@ -20,6 +20,14 @@ const _formJson = {
       'label': 'Brand',
       'validation': {'required': true, 'minLength': 2},
     },
+    // Optional on purpose: an unparsable value here used to pass validation
+    // and then vanish from the payload without a word.
+    {
+      'type': 'number',
+      'name': 'year',
+      'label': 'Year',
+      'validation': {'min': 1900},
+    },
     {
       'type': 'select',
       'name': 'fuel_type',
@@ -32,6 +40,10 @@ const _formJson = {
     },
   ],
 };
+
+/// Field order in [_formJson], for `find.byType(TextFormField).at(...)`.
+const _brandField = 0;
+const _yearField = 1;
 
 class _FakeDataSource implements DynamicFormDataSource {
   _FakeDataSource({this.fetchError});
@@ -115,7 +127,10 @@ void main() {
     final context = tester.element(find.byType(Scaffold));
     final l10n = AppLocalizations.of(context);
 
-    await tester.enterText(find.byType(TextFormField), 'Toyota');
+    await tester.enterText(
+      find.byType(TextFormField).at(_brandField),
+      'Toyota',
+    );
     await tester.tap(find.byType(DropdownButtonFormField<String>));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Gasoline').last);
@@ -138,7 +153,10 @@ void main() {
     final context = tester.element(find.byType(Scaffold));
     final l10n = AppLocalizations.of(context);
 
-    await tester.enterText(find.byType(TextFormField), 'Toyota');
+    await tester.enterText(
+      find.byType(TextFormField).at(_brandField),
+      'Toyota',
+    );
     await tester.tap(find.byType(DropdownButtonFormField<String>));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Gasoline').last);
@@ -147,11 +165,14 @@ void main() {
     await tester.tap(find.text(l10n.actionSubmit));
     await tester.pump(); // start the request, don't settle — it's gated open
 
-    expect(tester.widget<TextField>(find.byType(TextField)).enabled, isFalse);
+    expect(
+      tester.widget<TextField>(find.byType(TextField).at(_brandField)).enabled,
+      isFalse,
+    );
 
     // Typing into a locked field changes nothing, so what the request
     // carries stays what was on screen when it started.
-    await tester.enterText(find.byType(TextFormField), 'Honda');
+    await tester.enterText(find.byType(TextFormField).at(_brandField), 'Honda');
     await tester.pump();
 
     dataSource.submitGate!.complete();
@@ -159,8 +180,44 @@ void main() {
 
     expect(dataSource.submittedFields!['brand'], 'Toyota');
     expect(find.text(l10n.stateSubmitSuccess), findsOneWidget);
-    expect(tester.widget<TextField>(find.byType(TextField)).enabled, isTrue);
+    expect(
+      tester.widget<TextField>(find.byType(TextField).at(_brandField)).enabled,
+      isTrue,
+    );
   });
+
+  testWidgets(
+    'unparsable number reports invalid, not required, and blocks submit',
+    (tester) async {
+      final dataSource = _FakeDataSource();
+      await tester.pumpWidget(_harness(dataSource));
+      await tester.pumpAndSettle();
+
+      final context = tester.element(find.byType(Scaffold));
+      final l10n = AppLocalizations.of(context);
+
+      await tester.enterText(
+        find.byType(TextFormField).at(_brandField),
+        'Toyota',
+      );
+      // 'year' is optional, so this used to pass validation and then be
+      // dropped from the payload silently.
+      await tester.enterText(find.byType(TextFormField).at(_yearField), '12a');
+      await tester.tap(find.byType(DropdownButtonFormField<String>));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Gasoline').last);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text(l10n.actionSubmit));
+      await tester.pumpAndSettle();
+
+      // The field still visibly reads 12a, so the message has to say that is
+      // not a number — not that the field is empty.
+      expect(find.text(l10n.validationInvalidNumber), findsOneWidget);
+      expect(find.text(l10n.validationRequired), findsNothing);
+      expect(dataSource.submitCalled, isFalse);
+    },
+  );
 
   testWidgets('a load failure shows an error view with a working retry', (
     tester,
