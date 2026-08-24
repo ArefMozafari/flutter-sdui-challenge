@@ -16,6 +16,9 @@
     --opus-soft: #FBEEDD;
     --opus-border: #EBCFA3;
     --aref: #178A6B;
+    --codex: #7A4FCF;
+    --codex-soft: #F1EAFB;
+    --codex-border: #DCC9F5;
     --code-bg: #EEF0F2;
     --shadow: 0 1px 2px rgba(20,24,28,0.04), 0 1px 1px rgba(20,24,28,0.03);
   }
@@ -35,6 +38,9 @@
       --opus-soft: #34281B;
       --opus-border: #5C4526;
       --aref: #4FC79A;
+      --codex: #B79BF0;
+      --codex-soft: #2B2440;
+      --codex-border: #4A3A73;
       --code-bg: #22262A;
       --shadow: 0 1px 3px rgba(0,0,0,0.4);
     }
@@ -54,6 +60,9 @@
     --opus-soft: #34281B;
     --opus-border: #5C4526;
     --aref: #4FC79A;
+    --codex: #B79BF0;
+    --codex-soft: #2B2440;
+    --codex-border: #4A3A73;
     --code-bg: #22262A;
     --shadow: 0 1px 3px rgba(0,0,0,0.4);
   }
@@ -91,6 +100,7 @@
   .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
   .dot.sonnet { background: var(--sonnet); }
   .dot.opus { background: var(--opus); }
+  .dot.codex { background: var(--codex); }
 
   h2 {
     font-size: 1.05rem;
@@ -122,6 +132,7 @@
   }
   .tag.sonnet { background: var(--sonnet-soft); color: var(--sonnet); border: 1px solid var(--sonnet-border); }
   .tag.opus { background: var(--opus-soft); color: var(--opus); border: 1px solid var(--opus-border); }
+  .tag.codex { background: var(--codex-soft); color: var(--codex); border: 1px solid var(--codex-border); }
   .flow { color: var(--text-faint); margin: 0 2px; }
 
   /* tools table */
@@ -309,6 +320,7 @@
   }
   .who.ai { color: var(--sonnet); }
   .who.aref { color: var(--aref); }
+  .who.codex { color: var(--codex); }
 
   .skill-list { display: flex; flex-direction: column; gap: 6px; }
   .skill-line { font-size: 0.86rem; line-height: 1.5; }
@@ -358,9 +370,15 @@
           <td>Writing the real code — all 3 layer branches, the 3 follow-up refactor branches, and then every one of the 10 review-fix branches</td>
           <td>Every time a decision turned into a commit; then everything from PR #8 on</td>
         </tr>
+        <tr>
+          <td class="tool">Codex (CLI)</td>
+          <td><span class="tag codex"><span class="dot codex"></span>GPT-5.3-Codex</span></td>
+          <td>Reviewing the finished code — every bug in PRs #8–#17 came from its review, not from me and not from Claude</td>
+          <td>Once, over the whole codebase after PR #7</td>
+        </tr>
       </tbody>
     </table>
-    <p class="note" style="margin-top:12px;">No other AI tool or model used for this repo. No ChatGPT, no Copilot, nothing else.</p>
+    <p class="note" style="margin-top:12px;">Two vendors on purpose, and only at the end: Claude wrote the thing, then a different model read it cold. A reviewer that shares the author's blind spots isn't much of a reviewer. No Copilot, nothing else.</p>
   </section>
 
   <section>
@@ -480,13 +498,15 @@
 
     <div class="stage" style="border-left-color:var(--opus)">
       <div class="stage-head">
-        <span class="stage-name">Code review — 10 findings, 10 PRs</span>
+        <span class="stage-name">Cross-model review — 10 findings, 10 PRs</span>
         <span class="pr">PR #8–#17 · 25 commits</span>
+        <span class="tag codex">GPT-5.3-Codex</span>
+        <span class="flow">→</span>
         <span class="tag opus">Opus 5 xhigh</span>
         <a class="ref-link" style="font-size:0.76rem;" href="#log-38">#38–39</a>
       </div>
-      <p>I ran a review over the finished code and fed it the findings one at a time — 1 high, 5 medium, 3 low, plus a coverage gap. Each one got its own branch and its own PR, and I reviewed and merged them one by one.</p>
-      <p>The part I didn't expect: it argued with about half of them. Not to dodge the work — it fixed every single one — but it kept saying the reported fix was a patch and the real cause sat one level down. Two findings it partly disproved with actual evidence.</p>
+      <p>Different vendor on purpose. <span class="tag codex">GPT-5.3-Codex</span> read the finished codebase cold and wrote up 10 findings — 1 high, 5 medium, 3 low, plus a coverage gap. I handed them to <span class="tag opus">Opus 5</span> one at a time, each got its own branch and PR, and I reviewed and merged them one by one.</p>
+      <p>The interesting part was watching them disagree. Claude fixed all 10, but it argued with about half: kept saying the reported fix was a patch and the real cause sat a level down. It partly disproved two of Codex's findings with evidence — and while verifying an unrelated fix on the simulator, it found a bug Codex had missed entirely.</p>
       <p class="note">Tests 75 <span class="flow">→</span> 143. Coverage 82.7% <span class="flow">→</span> 90.9%, measured, not guessed.</p>
     </div>
 
@@ -505,9 +525,9 @@
         <div class="skill-line"><span class="skill-name">5</span><strong>Fixing my own mistake</strong> (<a class="ref-link" href="#log-31">#31</a>) — "I merged and deleted the old branch you've just created one again" — it isolated just the missing commit into its own small PR instead of redoing everything.</div>
         <div class="skill-line"><span class="skill-name">6</span><strong>New rules I wanted</strong> (<a class="ref-link" href="#log-33">#33</a>) — absolute imports + provider colocation, applied as a full retrofit across all 3 merged branches, verified on 3 separately bisectable commits.</div>
         <div class="skill-line"><span class="skill-name">7</span><strong>Simplifying the code</strong> (<a class="ref-link" href="#log-35">#35–36</a>) — sealed-class question → it tested the claim in a real scratch Dart project before answering, then removed the enum entirely once I agreed.</div>
-        <div class="skill-line"><span class="skill-name">8</span><strong>Feeding it a review, one finding at a time</strong> (<a class="ref-link" href="#log-39">#39</a>) — I pasted each finding as-is and said "next". It verified every one against the real code first, and twice told me the report was partly wrong: <code class="sym">PlatformFile</code> has no <code class="sym">extension</code> getter in our version, and the registry's builder map <em>can't</em> be <code class="sym">const</code> because closures aren't compile-time constants. It proved that one by trying it and showing me the analyzer error.</div>
-        <div class="skill-line"><span class="skill-name">9</span><strong>Letting it argue about the fix</strong> (<a class="ref-link" href="#log-39">#39</a>) — on the submit-state bug it refused to just carry the missing flag: said 4 flags encoding 5 mutually-exclusive states was the actual bug and proposed one sealed <code class="sym">SubmitStatus</code>. I took it. On the registry cast I went the other way and picked the minimal fix over its bigger idea — it did it my way and wrote down what that leaves unsolved instead of quietly disagreeing.</div>
-        <div class="skill-line"><span class="skill-name">10</span><strong>A bug it found itself</strong> (<a class="ref-link" href="#log-39">#39</a>) — while verifying the first fix on the simulator it typed <code class="sym">2019</code> into the year field, got "this field is required" back, and stopped to work out why: the Persian keyboard types <code class="sym">۲۰۱۹</code> and <code class="sym">num.tryParse</code> only reads ASCII. So in a <code class="sym">fa</code>-default app no number field could be filled at all. That became PR #9 and nobody had reported it.</div>
+        <div class="skill-line"><span class="skill-name">8</span><strong>Feeding Claude someone else's review</strong> (<a class="ref-link" href="#log-39">#39</a>) — I pasted each <span class="tag codex">GPT-5.3-Codex</span> finding as-is and said "next". Claude verified every one against the real code before touching it, and twice told me Codex was partly wrong: <code class="sym">PlatformFile</code> has no <code class="sym">extension</code> getter in our version, and the registry's builder map <em>can't</em> be <code class="sym">const</code> because closures aren't compile-time constants. It proved that second one by trying it and showing me the analyzer error. Worth the second opinion in both directions — the reviewer caught real bugs, and the author caught the reviewer.</div>
+        <div class="skill-line"><span class="skill-name">9</span><strong>Letting Claude argue with the reviewer</strong> (<a class="ref-link" href="#log-39">#39</a>) — on the submit-state bug it refused to just carry the missing flag Codex had pointed at: said 4 flags encoding 5 mutually-exclusive states was the actual bug and proposed one sealed <code class="sym">SubmitStatus</code>. I took it. On the registry cast I went the other way and stayed close to what Codex reported, over Claude's bigger idea — it did it my way and wrote down what that leaves unsolved instead of quietly disagreeing.</div>
+        <div class="skill-line"><span class="skill-name">10</span><strong>The bug neither of them was looking for</strong> (<a class="ref-link" href="#log-39">#39</a>) — while verifying the first fix on the simulator, Claude typed <code class="sym">2019</code> into the year field, got "this field is required" back, and stopped to work out why: the Persian keyboard types <code class="sym">۲۰۱۹</code> and <code class="sym">num.tryParse</code> only reads ASCII. So in a <code class="sym">fa</code>-default app no number field could be filled at all. That became PR #9 — not on Codex's list, and I'd never have caught it typing on an English keyboard.</div>
       </div>
     </div>
 
@@ -680,8 +700,9 @@
       <div class="log-entry" id="log-38"><div class="log-num">38</div><div class="log-body"><div class="log-text cmd">/model claude-opus-5</div></div></div>
 
       <div class="log-entry" id="log-39"><div class="log-num">39</div><div class="log-body">
-        <div class="log-tag">10 review findings, fed one at a time — each answered with "Merged, next:"</div>
-        <div class="log-text"><span class="who aref">Aref</span>pasted each finding verbatim. What came back per finding: verify it against the real code first → say plainly if the report was wrong → recommend a fix (sometimes a different one than reported) → branch, fix, test, prove the test fails without the fix, PR.</div>
+        <div class="log-tag">10 findings from GPT-5.3-Codex, fed to Claude one at a time — each answered with "Merged, next:"</div>
+        <div class="log-text"><span class="who codex">Codex</span>reviewed the finished codebase and wrote up 10 findings — 1 high, 5 medium, 3 low, plus a coverage gap.</div>
+        <div class="log-text" style="margin-top:6px;"><span class="who aref">Aref</span>pasted each one verbatim. What came back per finding: verify it against the real code first → say plainly if the report was wrong → recommend a fix (sometimes a different one than reported) → branch, fix, test, prove the test fails without the fix, PR.</div>
         <div class="log-text" style="margin-top:8px; padding-left:0;">
           <strong>#8</strong> edit mid-submit double-submitted and lost input — I picked its sealed <code class="sym">SubmitStatus</code> rewrite over the reported one-flag patch.<br>
           <strong>#9</strong> <em>its own find:</em> Persian keyboard digits never parsed, so no number field worked in <code class="sym">fa</code>.<br>
