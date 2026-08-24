@@ -1,5 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:mime/mime.dart';
 
 import 'package:dynamic_form_builder/core/design_system/components/ds_file_picker.dart';
 import 'package:dynamic_form_builder/core/l10n/app_localizations.dart';
@@ -56,7 +57,7 @@ class _FileFieldRendererState extends State<FileFieldRenderer> {
         selected.add(
           SelectedFile(
             name: file.name,
-            mimeType: _guessMimeType(file.name),
+            mimeType: resolveMimeType(file.name),
             bytes: await file.readAsBytes(),
           ),
         );
@@ -138,19 +139,23 @@ FileType _fileTypeFor(List<String>? accept) {
   return FileType.any;
 }
 
-const _extensionMimeTypes = {
-  'jpg': 'image/jpeg',
-  'jpeg': 'image/jpeg',
-  'png': 'image/png',
-  'gif': 'image/gif',
-  'webp': 'image/webp',
-  'heic': 'image/heic',
-  'pdf': 'application/pdf',
-};
-
-String _guessMimeType(String fileName) {
-  final dot = fileName.lastIndexOf('.');
-  if (dot == -1) return 'application/octet-stream';
-  final extension = fileName.substring(dot + 1).toLowerCase();
-  return _extensionMimeTypes[extension] ?? 'application/octet-stream';
-}
+/// The type reported to the `accept` rule and sent with the upload.
+///
+/// Backed by `package:mime`'s database rather than a hand-written table.
+/// The table this replaced knew seven extensions, so a `.bmp` or `.tiff` —
+/// which the `FileType.image` picker legitimately offers — resolved to
+/// `application/octet-stream`, failed the `image/*` accept rule, and was
+/// rejected as an unsupported type. The app turned away a file its own
+/// picker had just presented.
+///
+/// `package:mime` was already in the lock file as a transitive dependency;
+/// this only promotes it to a direct one. It covers every extension the old
+/// table did, `heic` included, and is case-insensitive.
+///
+/// A name the database doesn't recognise still falls back to
+/// `application/octet-stream`, which keeps the `accept` rule meaningful:
+/// "we can't tell what this is" has to fail a rule that names specific
+/// types, or the rule stops being a rule. That path is now rare enough to
+/// be a real answer rather than the everyday one it used to be.
+String resolveMimeType(String fileName) =>
+    lookupMimeType(fileName) ?? 'application/octet-stream';
