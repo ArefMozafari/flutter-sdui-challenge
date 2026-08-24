@@ -1,16 +1,11 @@
-# dynamic_form_builder
+# Dynamic Form Builder
 
 Server-driven dynamic form: fetches a form's structure, renders text/number/multiline/select/file
 fields, validates client-side, and submits it — including file uploads — back to the server. Built
 for the challenge in [task/README.md](task/README.md).
 
-- [Running it](#running-it)
-- [Architecture](#architecture)
-- [Design system](#design-system)
-- [Localization](#localization)
-- [Tests](#tests)
-- [Vocabulary](#vocabulary)
-- [AI usage](#ai-usage)
+- [AI usage](ai-usage-notes.html) — The real AI session log, Open in **browser** please.
+- [ARCHITECTURE.md](ARCHITECTURE.md)
 
 ## Running it
 
@@ -22,14 +17,6 @@ flutter pub get
 flutter gen-l10n      # generates lib/core/l10n/app_localizations*.dart
 flutter run
 ```
-
-## Architecture
-
-Four Riverpod-wired layers — Presentation, Application, Data, Domain — with Domain as the only
-shared dependency. Code splits into `core` (domain-agnostic), `shared` (domain-aware, multi-consumer),
-and `features` (single-owner, empty here).
-
-Full diagram, folder layout, and every structural decision: [ARCHITECTURE.md](ARCHITECTURE.md).
 
 ## Design system
 
@@ -62,8 +49,3 @@ Naming conventions and abbreviations used throughout the codebase:
 | **Sealed class** | A Dart 3 hierarchy closed outside its own file — every `switch` over it is exhaustiveness-checked at compile time. |
 | **`FieldSizeHint` vs. `DsFieldSize`** | Same three sizes, two enums — Domain's and the design system's — mapped by Presentation. |
 | **`SelectedFile` vs. `SubmissionFile`** | Same picked file at two layers: Domain groups it implicitly by field; Data's flat list carries the field name explicitly. |
-
-## AI usage
-
-[ai-usage-notes.html](ai-usage-notes.html) — the real session log, colorized and easier to
-skim than a raw transcript.
