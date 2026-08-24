@@ -350,13 +350,13 @@
           <td class="tool">Claude Code (CLI)</td>
           <td><span class="tag sonnet"><span class="dot sonnet"></span>Sonnet 5 · xhigh</span></td>
           <td>Planning, architecture debate, decisions, prompting, docs. Basically all the talking/thinking part</td>
-          <td>All the time, from start to end</td>
+          <td>All the time, up to the docs split (PR #7)</td>
         </tr>
         <tr>
           <td class="tool">Claude Code (CLI)</td>
           <td><span class="tag opus"><span class="dot opus"></span>Opus 5 · xhigh</span></td>
-          <td>Writing the real code — all 3 layer branches plus the 3 follow-up refactor branches, and the bug fixes</td>
-          <td>Every time a decision turned into a commit</td>
+          <td>Writing the real code — all 3 layer branches, the 3 follow-up refactor branches, and then every one of the 10 review-fix branches</td>
+          <td>Every time a decision turned into a commit; then everything from PR #8 on</td>
         </tr>
       </tbody>
     </table>
@@ -378,13 +378,15 @@
       </div>
       <div class="field-label">Commands</div>
       <div class="skill-list">
-        <div class="skill-line"><span class="skill-name">/compact</span>twice, right after Branch 1 shipped and right after PR #6 merged — both natural break points since the unit's decisions are already captured in the PR by then</div>
+        <div class="skill-line"><span class="skill-name">/compact</span>after Branch 1, after PR #6, and again before the docs split — always right after a PR, since by then the unit's decisions already live in the PR and the summary loses the least</div>
+        <div class="skill-line"><span class="skill-name">/model</span>once, switching to Opus 5 for the whole review stretch — the fixes were all real code, so I stopped paying Sonnet to think and let Opus write</div>
       </div>
       <div class="field-label">MCPs</div>
       <div class="skill-list">
-        <div class="skill-line"><span class="skill-name">iOS Simulator</span>real device verification: build, install, launch, screenshot, across all 3 branches</div>
+        <div class="skill-line"><span class="skill-name">iOS Simulator</span>real device verification: build, install, launch, screenshot, across all 3 branches — and again for the review fixes, where it drove the actual form (typed, picked a real photo, submitted) instead of just booting the app</div>
         <div class="skill-line"><span class="skill-name">Session chapters</span>one chapter-marking call after bootstrap finished</div>
       </div>
+      <p class="note" style="margin-top:14px;">No token dashboard, no counting script. I managed it by shape instead: one branch per unit, <code class="sym">/compact</code> right after each PR merged, and the model switch above. The one real cost driver was the review stretch, and that was worth it.</p>
     </div>
   </section>
 
@@ -396,7 +398,7 @@
       <div class="stage-head">
         <span class="stage-name">Planning</span>
         <span class="tag sonnet">Sonnet 5</span>
-        <a class="ref-link" style="font-size:0.76rem;" href="#log-1">#1–18</a>
+        <a class="ref-link" style="font-size:0.76rem;" href="#log-1">#1–17</a>
       </div>
       <p>Only, no code. Scan → pushed back to feature-first → plan rejected twice (standing rules, then the dependency diagram) → approved on the third try.</p>
     </div>
@@ -406,7 +408,7 @@
         <span class="stage-name">Scaffolding — Branch 1</span>
         <span class="pr">feat/design-system</span>
         <span class="pr">PR #1 · 7 commits</span>
-        <a class="ref-link" style="font-size:0.76rem;" href="#log-15">#15–18</a>
+        <a class="ref-link" style="font-size:0.76rem;" href="#log-15">#15–17</a>
       </div>
       <p><span class="tag sonnet">Sonnet 5</span> naming talk <span class="flow">→</span> <span class="tag opus">Opus 5 xhigh</span> code: token layer, Material 3 theme, 5 <code class="sym">Ds*</code> components, fa/en RTL, app shell.</p>
     </div>
@@ -416,7 +418,7 @@
         <span class="stage-name">Domain/Data — Branch 2</span>
         <span class="pr">feat/domain-data</span>
         <span class="pr">PR #2</span>
-        <a class="ref-link" style="font-size:0.76rem;" href="#log-20">#20–31</a>
+        <a class="ref-link" style="font-size:0.76rem;" href="#log-19">#19–28</a>
       </div>
       <p><span class="tag opus">Opus 5 xhigh</span> wrote the sealed spec/failure/validation/DTO/style-resolver/datasources/repository; <span class="tag sonnet">Sonnet 5</span> ran the shared-module debate mid-branch → <code class="sym">dynamic_form</code> lives in <code class="sym">shared/</code>, plus a layer-skip rule.</p>
     </div>
@@ -435,7 +437,7 @@
       <div class="stage-head">
         <span class="stage-name">Debugging</span>
         <span class="pr">PR #4</span>
-        <a class="ref-link" style="font-size:0.76rem;" href="#log-34">#34–37</a>
+        <a class="ref-link" style="font-size:0.76rem;" href="#log-30">#30–32</a>
       </div>
       <p><span class="tag sonnet">Sonnet 5</span> found it <span class="flow">→</span> <span class="tag opus">Opus 5 xhigh</span> fixed it: the multi-file-upload bug, shipped as its own PR #4.</p>
     </div>
@@ -444,7 +446,7 @@
       <div class="stage-head">
         <span class="stage-name">Refactor</span>
         <span class="pr">PR #5</span>
-        <a class="ref-link" style="font-size:0.76rem;" href="#log-38">#38–39</a>
+        <a class="ref-link" style="font-size:0.76rem;" href="#log-33">#33–34</a>
       </div>
       <p><span class="tag sonnet">Sonnet 5</span> set the rules (absolute imports, provider colocation) <span class="flow">→</span> <span class="tag opus">Opus 5 xhigh</span> did the retrofit.</p>
     </div>
@@ -453,7 +455,7 @@
       <div class="stage-head">
         <span class="stage-name">Simplify</span>
         <span class="pr">PR #6</span>
-        <a class="ref-link" style="font-size:0.76rem;" href="#log-41">#41–43</a>
+        <a class="ref-link" style="font-size:0.76rem;" href="#log-35">#35–36</a>
       </div>
       <p><span class="tag sonnet">Sonnet 5</span> checked the sealed-class idea <span class="flow">→</span> <span class="tag opus">Opus 5 xhigh</span> removed the enum.</p>
     </div>
@@ -466,6 +468,28 @@
       <p>README rewritten repeatedly across Branch 3 and both refactor branches.</p>
     </div>
 
+    <div class="stage" style="border-left-color:var(--sonnet)">
+      <div class="stage-head">
+        <span class="stage-name">Docs split &amp; repo layout</span>
+        <span class="pr">docs/architecture-and-repo-layout</span>
+        <span class="pr">PR #7 · 4 commits</span>
+        <span class="tag sonnet">Sonnet 5</span>
+      </div>
+      <p>Architecture pulled out of the README into its own <code class="sym">ARCHITECTURE.md</code>, the two files the challenge shipped moved into <code class="sym">task/</code> untouched, and my own docs promoted to the repo root. Then I made it cut both files down again — 2–3 lines per point.</p>
+    </div>
+
+    <div class="stage" style="border-left-color:var(--opus)">
+      <div class="stage-head">
+        <span class="stage-name">Code review — 10 findings, 10 PRs</span>
+        <span class="pr">PR #8–#17 · 25 commits</span>
+        <span class="tag opus">Opus 5 xhigh</span>
+        <a class="ref-link" style="font-size:0.76rem;" href="#log-38">#38–39</a>
+      </div>
+      <p>I ran a review over the finished code and fed it the findings one at a time — 1 high, 5 medium, 3 low, plus a coverage gap. Each one got its own branch and its own PR, and I reviewed and merged them one by one.</p>
+      <p>The part I didn't expect: it argued with about half of them. Not to dodge the work — it fixed every single one — but it kept saying the reported fix was a patch and the real cause sat one level down. Two findings it partly disproved with actual evidence.</p>
+      <p class="note">Tests 75 <span class="flow">→</span> 143. Coverage 82.7% <span class="flow">→</span> 90.9%, measured, not guessed.</p>
+    </div>
+
   </section>
 
   <section>
@@ -476,12 +500,21 @@
       <div class="skill-list">
         <div class="skill-line"><span class="skill-name">1</span><strong>Scan &amp; pushback</strong> (<a class="ref-link" href="#log-1">#1–3</a>) — asked for a repo scan; it proposed layer-first, I pushed back for feature-first with my own reasoning, it agreed instead of defending the first answer.</div>
         <div class="skill-line"><span class="skill-name">2</span><strong>Plan rejected, twice</strong> (<a class="ref-link" href="#log-5">#5</a>, <a class="ref-link" href="#log-11">#11</a>) — round 1 was a full standing-rules message (no horizontal/no-bottom-up deps, fpdart, confirm-first even in Auto Mode, a harness tool-usage override); round 2 caught the dependency diagram still being wrong. Approved on the third submission.</div>
-        <div class="skill-line"><span class="skill-name">3</span><strong>The shared-module debate</strong> (<a class="ref-link" href="#log-24">#24–27</a>) — proposed a "Shared Module" idea myself, told it to challenge me. Landed on: <code class="sym">dynamic_form</code> lives in <code class="sym">shared/</code>, plus a layer-skip rule — nothing here was really a correction, just real design talk.</div>
-        <div class="skill-line"><span class="skill-name">4</span><strong>Bug-hunting audit</strong> (<a class="ref-link" href="#log-35">#35</a>) — "check the leftover HttpDynamicFormDataSource and glossary for accuracy" — found the real multi-file-upload bug (map literal with duplicate keys) without me pointing at it.</div>
-        <div class="skill-line"><span class="skill-name">5</span><strong>Fixing my own mistake</strong> (<a class="ref-link" href="#log-36">#36</a>) — "I merged and deleted the old branch you've just created one again" — it isolated just the missing commit into its own small PR instead of redoing everything.</div>
-        <div class="skill-line"><span class="skill-name">6</span><strong>New rules I wanted</strong> (<a class="ref-link" href="#log-38">#38</a>) — absolute imports + provider colocation, applied as a full retrofit across all 3 merged branches, verified on 3 separately bisectable commits.</div>
-        <div class="skill-line"><span class="skill-name">7</span><strong>Simplifying the code</strong> (<a class="ref-link" href="#log-41">#41–42</a>) — sealed-class question → it tested the claim in a real scratch Dart project before answering, then removed the enum entirely once I agreed.</div>
+        <div class="skill-line"><span class="skill-name">3</span><strong>The shared-module debate</strong> (<a class="ref-link" href="#log-22">#22–25</a>) — proposed a "Shared Module" idea myself, told it to challenge me. Landed on: <code class="sym">dynamic_form</code> lives in <code class="sym">shared/</code>, plus a layer-skip rule — nothing here was really a correction, just real design talk.</div>
+        <div class="skill-line"><span class="skill-name">4</span><strong>Bug-hunting audit</strong> (<a class="ref-link" href="#log-30">#30</a>) — "check the leftover HttpDynamicFormDataSource and glossary for accuracy" — found the real multi-file-upload bug (map literal with duplicate keys) without me pointing at it.</div>
+        <div class="skill-line"><span class="skill-name">5</span><strong>Fixing my own mistake</strong> (<a class="ref-link" href="#log-31">#31</a>) — "I merged and deleted the old branch you've just created one again" — it isolated just the missing commit into its own small PR instead of redoing everything.</div>
+        <div class="skill-line"><span class="skill-name">6</span><strong>New rules I wanted</strong> (<a class="ref-link" href="#log-33">#33</a>) — absolute imports + provider colocation, applied as a full retrofit across all 3 merged branches, verified on 3 separately bisectable commits.</div>
+        <div class="skill-line"><span class="skill-name">7</span><strong>Simplifying the code</strong> (<a class="ref-link" href="#log-35">#35–36</a>) — sealed-class question → it tested the claim in a real scratch Dart project before answering, then removed the enum entirely once I agreed.</div>
+        <div class="skill-line"><span class="skill-name">8</span><strong>Feeding it a review, one finding at a time</strong> (<a class="ref-link" href="#log-39">#39</a>) — I pasted each finding as-is and said "next". It verified every one against the real code first, and twice told me the report was partly wrong: <code class="sym">PlatformFile</code> has no <code class="sym">extension</code> getter in our version, and the registry's builder map <em>can't</em> be <code class="sym">const</code> because closures aren't compile-time constants. It proved that one by trying it and showing me the analyzer error.</div>
+        <div class="skill-line"><span class="skill-name">9</span><strong>Letting it argue about the fix</strong> (<a class="ref-link" href="#log-39">#39</a>) — on the submit-state bug it refused to just carry the missing flag: said 4 flags encoding 5 mutually-exclusive states was the actual bug and proposed one sealed <code class="sym">SubmitStatus</code>. I took it. On the registry cast I went the other way and picked the minimal fix over its bigger idea — it did it my way and wrote down what that leaves unsolved instead of quietly disagreeing.</div>
+        <div class="skill-line"><span class="skill-name">10</span><strong>A bug it found itself</strong> (<a class="ref-link" href="#log-39">#39</a>) — while verifying the first fix on the simulator it typed <code class="sym">2019</code> into the year field, got "this field is required" back, and stopped to work out why: the Persian keyboard types <code class="sym">۲۰۱۹</code> and <code class="sym">num.tryParse</code> only reads ASCII. So in a <code class="sym">fa</code>-default app no number field could be filled at all. That became PR #9 and nobody had reported it.</div>
       </div>
+    </div>
+
+    <div class="prompt-card" style="border-left:3px solid var(--opus);">
+      <div class="prompt-num">How I judged the fixes</div>
+      <div class="prompt-title">"Prove the test fails without the fix"</div>
+      <p>Every fix PR reintroduces its own bug and shows the test failing, instead of just saying tests pass. That's what I actually read in the PR bodies — a green suite proves nothing if the test never could have caught it. It caught one of its own that way: the widget test for the submit lock stayed green with the state fix reverted, because it was covering a different half. Two tests, two halves, both proven.</p>
     </div>
 
   </section>
@@ -571,13 +604,9 @@
         <div class="log-text" style="margin-top:6px;"><span class="who aref">Aref picked</span><strong>Defer to Branch 3</strong> — not the recommended one</div>
       </div></div>
 
-      <div class="log-entry" id="log-18"><div class="log-num">18</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>Ok go ahead. <span class="note">(this shipped Branch 1 / PR #1)</span></div></div></div>
+      <div class="log-entry" id="log-18"><div class="log-num">18</div><div class="log-body"><div class="log-text cmd">/compact</div></div></div>
 
-      <div class="log-entry" id="log-19"><div class="log-num">19</div><div class="log-body"><div class="log-text cmd">/compact</div></div></div>
-
-      <div class="log-entry" id="log-20"><div class="log-num">20</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>Go on <span class="note">(started Branch 2)</span></div></div></div>
-
-      <div class="log-entry" id="log-21"><div class="log-num">21</div><div class="log-body">
+      <div class="log-entry" id="log-19"><div class="log-num">19</div><div class="log-body">
         <div class="log-tag">3 questions</div>
         <div class="log-text"><span class="who ai">AI asked</span>"FieldValue (Domain): one sealed type per field kind, or one flexible wrapper?" — <em>Sealed per kind (Rec.)</em> / <em>Single wrapper with Object? value</em></div>
         <div class="log-text" style="margin-top:4px; padding-left:52px;">"ServerStyleResolver: how should it snap arbitrary px/hex to tokens?" — <em>Nearest-value snap (Rec.)</em> / <em>Exact-match only, else default</em></div>
@@ -585,62 +614,56 @@
         <div class="log-text" style="margin-top:6px;"><span class="who aref">Aref picked</span>all three recommended — Sealed per kind / Nearest-value snap / Structural only</div>
       </div></div>
 
-      <div class="log-entry" id="log-22"><div class="log-num">22</div><div class="log-body">
+      <div class="log-entry" id="log-20"><div class="log-num">20</div><div class="log-body">
         <div class="log-text"><span class="who ai">AI asked</span>"No real backend to test against — still build a real HttpDynamicFormDataSource, or Mock-only for now?" — <em>Build it, untested against real server (Rec.)</em> / <em>Mock-only for now</em></div>
         <div class="log-text" style="margin-top:6px;"><span class="who aref">Aref picked</span>Build it, untested <span class="note">(recommended)</span></div>
       </div></div>
 
-      <div class="log-entry" id="log-23"><div class="log-num">23</div><div class="log-body">
+      <div class="log-entry" id="log-21"><div class="log-num">21</div><div class="log-body">
         <div class="log-text"><span class="who ai">AI asked</span>"Push feat/domain-data and open PR #2?" — <em>Yes, push and open PR (Rec.)</em> / <em>Not yet</em></div>
         <div class="log-text" style="margin-top:6px;"><span class="who aref">Aref picked</span><strong>Not yet</strong> — held off first, shipped later</div>
       </div></div>
 
-      <div class="log-entry" id="log-24"><div class="log-num">24</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>OK, I'm think I have to double check something with you: Wanted to let you know that, In this architecture we have modules (like a related codes group of a feature) and the folder directory is feature first. So what if there is module(s) that going to be reusable logic but also as a feature at the same time yeah? For this kind of situations/codes we can have a "Shared Module", and its going to be placed in a core/shared_modules/ or core/shared/modules/ (I think first one is better for now as the core itself is kind of a place for shared codes). OK? Challenge me if you think different. We can debate about everything (keep that in mind).</div></div></div>
+      <div class="log-entry" id="log-22"><div class="log-num">22</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>OK, I'm think I have to double check something with you: Wanted to let you know that, In this architecture we have modules (like a related codes group of a feature) and the folder directory is feature first. So what if there is module(s) that going to be reusable logic but also as a feature at the same time yeah? For this kind of situations/codes we can have a "Shared Module", and its going to be placed in a core/shared_modules/ or core/shared/modules/ (I think first one is better for now as the core itself is kind of a place for shared codes). OK? Challenge me if you think different. We can debate about everything (keep that in mind).</div></div></div>
 
-      <div class="log-entry" id="log-25"><div class="log-num">25</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>Good. But: Whenever I use either module or feature, I mean both. So whenever I say one of them, you should consider both in terms of meaning. Your assumption about core is completely correct. Stay with it. But sometimes there are features/modules that don't need to have all the layers/layering. OK? Exactly like the dynamic form module of our app. You need to think of the main app as a Survey App. This app is going to collect data about multiple subjects from the person who has installed it. That dynamic form module/feature is going to be used across multiple main pages/features/modules of Survey App. So, as you mentioned, this is not something you can move to another app and expect it to work on demand, but it's also not the same as of a the signup module/feature for example, which has its own place across the whole app. Also, did you update your memory about the "Challenge me / Debate With Me" approach that I told you about earlier?</div></div></div>
+      <div class="log-entry" id="log-23"><div class="log-num">23</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>Good. But: Whenever I use either module or feature, I mean both. So whenever I say one of them, you should consider both in terms of meaning. Your assumption about core is completely correct. Stay with it. But sometimes there are features/modules that don't need to have all the layers/layering. OK? Exactly like the dynamic form module of our app. You need to think of the main app as a Survey App. This app is going to collect data about multiple subjects from the person who has installed it. That dynamic form module/feature is going to be used across multiple main pages/features/modules of Survey App. So, as you mentioned, this is not something you can move to another app and expect it to work on demand, but it's also not the same as of a the signup module/feature for example, which has its own place across the whole app. Also, did you update your memory about the "Challenge me / Debate With Me" approach that I told you about earlier?</div></div></div>
 
-      <div class="log-entry" id="log-26"><div class="log-num">26</div><div class="log-body">
+      <div class="log-entry" id="log-24"><div class="log-num">24</div><div class="log-body">
         <div class="log-tag">2 questions</div>
         <div class="log-text"><span class="who ai">AI asked</span>"Rename lib/features/dynamic_form/ → lib/shared/dynamic_form/ across the 11 unpushed commits?" — <em>Yes, rename now (Rec.)</em> / <em>Not yet</em></div>
         <div class="log-text" style="margin-top:4px; padding-left:52px;">"On 'doesn't need all the layers' — is my read right (drop the owned Page/route, keep the rest)?" — <em>Yes, that's it — drop the owned Page only</em> / <em>No — meant a different layer</em></div>
         <div class="log-text" style="margin-top:6px;"><span class="who aref">Aref picked</span>both first/recommended option — Yes, rename now / Yes, that's it</div>
       </div></div>
 
-      <div class="log-entry" id="log-27"><div class="log-num">27</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>Just one more thing about doesn't need all the layers: Modules/Features could skip some layers if that layer is not handling anything special and is just boilerplate. For example, we can call a repository directly from the presentation layer, OK? This is related to that "don't over-engineer" thing I mentioned. Again, there should be no upward dependency. It's just about being able to jump from top to bottom when the layers in the middle are not adding anything meaningful.</div></div></div>
+      <div class="log-entry" id="log-25"><div class="log-num">25</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>Just one more thing about doesn't need all the layers: Modules/Features could skip some layers if that layer is not handling anything special and is just boilerplate. For example, we can call a repository directly from the presentation layer, OK? This is related to that "don't over-engineer" thing I mentioned. Again, there should be no upward dependency. It's just about being able to jump from top to bottom when the layers in the middle are not adding anything meaningful.</div></div></div>
 
-      <div class="log-entry" id="log-28"><div class="log-num">28</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>Describe it more simpler. I didn't get it</div></div></div>
+      <div class="log-entry" id="log-26"><div class="log-num">26</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>Describe it more simpler. I didn't get it</div></div></div>
 
-      <div class="log-entry" id="log-29"><div class="log-num">29</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>Skip it for fetch, keep Manager for submit</div></div></div>
+      <div class="log-entry" id="log-27"><div class="log-num">27</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>Skip it for fetch, keep Manager for submit</div></div></div>
 
-      <div class="log-entry" id="log-30"><div class="log-num">30</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>Push and open PR #2</div></div></div>
-
-      <div class="log-entry" id="log-31"><div class="log-num">31</div><div class="log-body">
+      <div class="log-entry" id="log-28"><div class="log-num">28</div><div class="log-body">
         <div class="log-tag">feat/design-system had already been merged+deleted</div>
         <div class="log-text"><span class="who ai">AI asked</span>"feat/design-system is gone. How should PR #2 target, and does this change the plan for PR #3?" — <em>PR #2 targets main, stays open (Rec.)</em> / <em>Switch to merge-as-you-go now</em></div>
         <div class="log-text" style="margin-top:6px;"><span class="who aref">Aref picked</span>PR #2 targets main <span class="note">(recommended)</span></div>
       </div></div>
 
-      <div class="log-entry" id="log-32"><div class="log-num">32</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>go ahead <span class="note">(started Branch 3)</span></div></div></div>
-
-      <div class="log-entry" id="log-33"><div class="log-num">33</div><div class="log-body">
+      <div class="log-entry" id="log-29"><div class="log-num">29</div><div class="log-body">
         <div class="log-text"><span class="who ai">AI asked</span>"Push feat/application-presentation and open PR #3?" — <em>Yes, push and open PR (Rec.)</em> / <em>Not yet</em></div>
         <div class="log-text" style="margin-top:6px;"><span class="who aref">Aref picked</span>Yes, push and open PR <span class="note">(recommended)</span></div>
       </div></div>
 
-      <div class="log-entry" id="log-34"><div class="log-num">34</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>I fixed the xcode problem. Is there anything else to go on with?</div></div></div>
+      <div class="log-entry" id="log-30"><div class="log-num">30</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>check the leftover HttpDynamicFormDataSource and glossary for accuracy</div></div></div>
 
-      <div class="log-entry" id="log-35"><div class="log-num">35</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>check the leftover HttpDynamicFormDataSource and glossary for accuracy</div></div></div>
+      <div class="log-entry" id="log-31"><div class="log-num">31</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>I merged and deleted the old branch you've just created one again</div></div></div>
 
-      <div class="log-entry" id="log-36"><div class="log-num">36</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>I merged and deleted the old branch you've just created one again</div></div></div>
-
-      <div class="log-entry" id="log-37"><div class="log-num">37</div><div class="log-body">
+      <div class="log-entry" id="log-32"><div class="log-num">32</div><div class="log-body">
         <div class="log-text"><span class="who ai">AI asked</span>"main is missing the multi-file upload bug fix. How do you want it in main?" — <em>Open a small PR for it (Rec.)</em> / <em>Just tell me, you'll handle it</em></div>
         <div class="log-text" style="margin-top:6px;"><span class="who aref">Aref picked</span>Open a small PR <span class="note">(recommended)</span> — this became PR #4</div>
       </div></div>
 
-      <div class="log-entry" id="log-38"><div class="log-num">38</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>OK, reviewed and merged. Now, some changes: NO relative paths, just absolute ones whenever possible. We declare each *Provider variable for any class at the top of its own file (before the class declaration), so when we Command+Click on the variable, we can directly jump to the related provider variable's class/notifier implementation.</div></div></div>
+      <div class="log-entry" id="log-33"><div class="log-num">33</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>OK, reviewed and merged. Now, some changes: NO relative paths, just absolute ones whenever possible. We declare each *Provider variable for any class at the top of its own file (before the class declaration), so when we Command+Click on the variable, we can directly jump to the related provider variable's class/notifier implementation.</div></div></div>
 
-      <div class="log-entry" id="log-39"><div class="log-num">39</div><div class="log-body">
+      <div class="log-entry" id="log-34"><div class="log-num">34</div><div class="log-body">
         <div class="log-tag">3 questions</div>
         <div class="log-text"><span class="who ai">AI asked</span>"Apply both new rules only to new code, or retrofit everything already merged in main too?" — <em>Retrofit everything now (Rec.)</em> / <em>New code only</em></div>
         <div class="log-text" style="margin-top:4px; padding-left:52px;">"DataSource is abstract with 2 implementations — its provider can't colocate with 'the' class. Where should it live?" — <em>Keep app/di.dart for this case (Rec.)</em> / <em>Put it in mock_dynamic_form_datasource.dart</em></div>
@@ -648,17 +671,31 @@
         <div class="log-text" style="margin-top:6px;"><span class="who aref">Aref picked</span>Retrofit everything now <span class="note">(recommended)</span>. DataSource provider → <strong>neither option — my own idea:</strong> beside the abstract class, as a provider family the caller can choose from. Controller provider → <strong>switch to hand-written</strong>, not the recommended codegen — "so it's easier for the reviewer to review."</div>
       </div></div>
 
-      <div class="log-entry" id="log-40"><div class="log-num">40</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>I Reviewed. Yes, open the PR <span class="note">(PR #5)</span></div></div></div>
+      <div class="log-entry" id="log-35"><div class="log-num">35</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>OK reviewed and merged, But: What if we use a sealed abstract class for DynamicFormDataSource to get rid of that enum and have exhaustive type checking? What do you think?</div></div></div>
 
-      <div class="log-entry" id="log-41"><div class="log-num">41</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>OK reviewed and merged, But: What if we use a sealed abstract class for DynamicFormDataSource to get rid of that enum and have exhaustive type checking? What do you think?</div></div></div>
+      <div class="log-entry" id="log-36"><div class="log-num">36</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>Yes, do that. I forgot about that rule of sealed classes</div></div></div>
 
-      <div class="log-entry" id="log-42"><div class="log-num">42</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>Yes, do that. I forgot about that rule of sealed classes</div></div></div>
+      <div class="log-entry" id="log-37"><div class="log-num">37</div><div class="log-body"><div class="log-text cmd">/compact</div></div></div>
 
-      <div class="log-entry" id="log-43"><div class="log-num">43</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>Open the PR <span class="note">(PR #6)</span></div></div></div>
+      <div class="log-entry" id="log-38"><div class="log-num">38</div><div class="log-body"><div class="log-text cmd">/model claude-opus-5</div></div></div>
 
-      <div class="log-entry" id="log-44"><div class="log-num">44</div><div class="log-body"><div class="log-text"><span class="who aref">Aref</span>Reviewed, merged</div></div></div>
+      <div class="log-entry" id="log-39"><div class="log-num">39</div><div class="log-body">
+        <div class="log-tag">10 review findings, fed one at a time — each answered with "Merged, next:"</div>
+        <div class="log-text"><span class="who aref">Aref</span>pasted each finding verbatim. What came back per finding: verify it against the real code first → say plainly if the report was wrong → recommend a fix (sometimes a different one than reported) → branch, fix, test, prove the test fails without the fix, PR.</div>
+        <div class="log-text" style="margin-top:8px; padding-left:0;">
+          <strong>#8</strong> edit mid-submit double-submitted and lost input — I picked its sealed <code class="sym">SubmitStatus</code> rewrite over the reported one-flag patch.<br>
+          <strong>#9</strong> <em>its own find:</em> Persian keyboard digits never parsed, so no number field worked in <code class="sym">fa</code>.<br>
+          <strong>#10</strong> registry fallback threw instead of degrading — here I picked the <strong>minimal</strong> fix, not its bigger one.<br>
+          <strong>#11</strong> single-file field appended instead of replacing.<br>
+          <strong>#12</strong> app rejected <code class="sym">.bmp</code>/<code class="sym">.tiff</code> its own picker had offered — swapped a 7-entry table for <code class="sym">package:mime</code>, which was already in the lock file.<br>
+          <strong>#13</strong> unparsable number said "required" over visible text — I picked the distinct invalid state.<br>
+          <strong>#14</strong> a null option value became the literal string "null".<br>
+          <strong>#15</strong> text validated trimmed but submitted raw.<br>
+          <strong>#16</strong> const declarations — it confirmed the linter wasn't flagging them at all, and that 1 of the 3 sites can't be const.<br>
+          <strong>#17</strong> coverage: it told me the finding was out of date (the layer it called untested was already 88–100%), measured properly, and closed what was actually left.
+        </div>
+      </div></div>
 
-      <div class="log-entry" id="log-45"><div class="log-num">45</div><div class="log-body"><div class="log-text cmd">/compact</div></div></div>
     </div>
   </section>
 
