@@ -8,9 +8,9 @@ Standing laws: `~/.claude/CLAUDE.md`, confirmed for this project on 2026-08-22.
 A take-home technical challenge (see [task/README.md](task/README.md)): a server-driven
 dynamic form builder in Flutter. The two files the challenge itself provided (`README.md`,
 `sample.ai.md`) live under `task/`, untouched, so they stay distinguishable from anything
-written for the submission. `ai.md` (mine to write, never generated) and `.notes/ai-log.md`
-(gitignored raw material for it) stay at repo root. The submission's own docs — `README.md`
-and `ARCHITECTURE.md` — also live at repo root. All application code lives in
+written for the submission. `ai.md` (mine to write, never generated) stays at repo root.
+The submission's own docs — `README.md` and `ARCHITECTURE.md` — also live at repo root.
+All application code lives in
 `dynamic_form_builder/` — a deliberate split so the challenge material and the actual
 deliverable don't mix in the same tree.
 
