@@ -60,6 +60,14 @@ class DynamicFormController extends Notifier<DynamicFormViewState> {
     final current = state;
     if (current is! DynamicFormLoaded) return;
 
+    // Values are frozen for as long as a request is in flight. The view
+    // already locks every field over exactly that window, so this costs the
+    // user nothing — it makes the freeze the controller's own guarantee
+    // rather than something the view is trusted to enforce, which is what
+    // keeps a submitted payload from ever disagreeing with what was on
+    // screen when the success banner appears.
+    if (current.isSubmitting) return;
+
     state = DynamicFormLoaded(
       spec: current.spec,
       values: {...current.values, fieldName: value},
@@ -72,10 +80,11 @@ class DynamicFormController extends Notifier<DynamicFormViewState> {
   /// a field means for it.
   SubmitStatus _statusAfterEditing(String fieldName, SubmitStatus current) =>
       switch (current) {
-        // An edit must never retire an in-flight submit. Clearing it here is
-        // what previously re-enabled the submit button mid-request (letting a
-        // second request start) and unlocked fields whose new values the
-        // running request could no longer include.
+        // Unreachable — [updateValue] returns before this while a request is
+        // in flight. Kept so the switch stays total, and so that dropping
+        // that guard can't silently go back to retiring a live submit: that
+        // is what re-enabled the submit button mid-request (letting a second
+        // request start) and unlocked the fields underneath it.
         SubmitInProgress status => status,
         // Drop only this field's error; the others still describe values the
         // user hasn't touched since they were flagged.
