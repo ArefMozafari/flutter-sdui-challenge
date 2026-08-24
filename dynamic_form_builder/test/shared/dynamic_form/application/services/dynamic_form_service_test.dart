@@ -16,6 +16,7 @@ import 'package:flutter_test/flutter_test.dart';
 class _RecordingDataSource implements DynamicFormDataSource {
   bool submitCalled = false;
   Object? submitError;
+  Map<String, dynamic>? submittedFields;
 
   @override
   Future<Map<String, dynamic>> fetchFormSpec() async =>
@@ -28,6 +29,7 @@ class _RecordingDataSource implements DynamicFormDataSource {
     required List<SubmissionFile> files,
   }) async {
     submitCalled = true;
+    submittedFields = fields;
     if (submitError != null) throw submitError!;
   }
 }
@@ -43,6 +45,33 @@ const _requiredText = TextFieldSpec(
 );
 
 void main() {
+  test('text is submitted as the string validation measured', () async {
+    final dataSource = _RecordingDataSource();
+    final service = DynamicFormService(DynamicFormRepository(dataSource));
+
+    final result = await service.submitForm(
+      form: _formWith([_requiredText]),
+      values: {'brand': const TextValue('  Toyota  ')},
+    );
+
+    expect(result, isA<SubmitFormSuccess>());
+    // Used to transmit '  Toyota  ' while minLength had counted 'Toyota'.
+    expect(dataSource.submittedFields!['brand'], 'Toyota');
+  });
+
+  test('a whitespace-only required field is rejected, not submitted', () async {
+    final dataSource = _RecordingDataSource();
+    final service = DynamicFormService(DynamicFormRepository(dataSource));
+
+    final result = await service.submitForm(
+      form: _formWith([_requiredText]),
+      values: {'brand': const TextValue('   ')},
+    );
+
+    expect(result, isA<SubmitFormValidationFailed>());
+    expect(dataSource.submitCalled, isFalse);
+  });
+
   test(
     'an invalid field blocks submission before the repository is called',
     () async {
