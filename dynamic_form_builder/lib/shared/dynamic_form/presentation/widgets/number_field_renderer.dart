@@ -22,12 +22,17 @@ class NumberFieldRenderer extends StatelessWidget {
     required this.value,
     required this.error,
     required this.onChanged,
+    this.enabled = true,
   });
 
   final NumberFieldSpec spec;
   final NumberValue value;
   final ValidationResult? error;
   final ValueChanged<FieldValue> onChanged;
+
+  /// False while a submit is in flight, so the values being sent can't
+  /// change underneath the request.
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +46,7 @@ class NumberFieldRenderer extends StatelessWidget {
       isRequired: spec.validation.required,
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       size: spec.sizeHint.toDs,
+      enabled: enabled,
     );
   }
 }

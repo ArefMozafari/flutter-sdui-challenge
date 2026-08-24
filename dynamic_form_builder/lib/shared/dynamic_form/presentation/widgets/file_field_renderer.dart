@@ -20,12 +20,19 @@ class FileFieldRenderer extends StatefulWidget {
     required this.value,
     required this.error,
     required this.onChanged,
+    this.enabled = true,
   });
 
   final FileFieldSpec spec;
   final FileValue value;
   final ValidationResult? error;
   final ValueChanged<FieldValue> onChanged;
+
+  /// False while a submit is in flight, so the files being sent can't
+  /// change underneath the request. Combines with this renderer's own
+  /// [_FileFieldRendererState._isPicking] guard, which covers the unrelated
+  /// case of a picker already being open.
+  final bool enabled;
 
   @override
   State<FileFieldRenderer> createState() => _FileFieldRendererState();
@@ -81,7 +88,7 @@ class _FileFieldRendererState extends State<FileFieldRenderer> {
       onRemove: _removeAt,
       errorText: resolveValidationMessage(l10n, widget.error),
       isRequired: widget.spec.validation.required,
-      enabled: !_isPicking,
+      enabled: widget.enabled && !_isPicking,
     );
   }
 }

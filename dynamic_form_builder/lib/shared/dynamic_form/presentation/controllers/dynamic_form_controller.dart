@@ -84,8 +84,9 @@ class DynamicFormController extends Notifier<DynamicFormViewState> {
         ),
         // A success or failure banner describes a form that no longer exists
         // the moment the user changes something in it.
-        SubmitIdle() || SubmitSucceeded() || SubmitFailed() =>
-          const SubmitIdle(),
+        SubmitIdle() ||
+        SubmitSucceeded() ||
+        SubmitFailed() => const SubmitIdle(),
       };
 
   /// A rejection with nothing left to report is just [SubmitIdle] — without

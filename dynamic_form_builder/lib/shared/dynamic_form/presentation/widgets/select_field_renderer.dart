@@ -15,12 +15,17 @@ class SelectFieldRenderer extends StatelessWidget {
     required this.value,
     required this.error,
     required this.onChanged,
+    this.enabled = true,
   });
 
   final SelectFieldSpec spec;
   final SelectValue value;
   final ValidationResult? error;
   final ValueChanged<FieldValue> onChanged;
+
+  /// False while a submit is in flight, so the values being sent can't
+  /// change underneath the request.
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +41,7 @@ class SelectFieldRenderer extends StatelessWidget {
       errorText: resolveValidationMessage(l10n, error),
       isRequired: spec.validation.required,
       size: spec.sizeHint.toDs,
+      enabled: enabled,
     );
   }
 }

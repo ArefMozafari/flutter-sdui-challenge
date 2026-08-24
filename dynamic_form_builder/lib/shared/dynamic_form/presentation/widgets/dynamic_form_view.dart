@@ -104,10 +104,16 @@ class _LoadedView extends ConsumerWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: AppSpacing.lg),
                   child: FieldWidgetRegistry.build(
-                    field,
-                    state.values[field.name]!,
-                    state.fieldErrors[field.name],
-                    (value) => notifier.updateValue(field.name, value),
+                    spec: field,
+                    value: state.values[field.name]!,
+                    error: state.fieldErrors[field.name],
+                    onChanged: (value) =>
+                        notifier.updateValue(field.name, value),
+                    // Locking the fields, not just the button, is what makes
+                    // the submitted values the ones the user actually saw:
+                    // an edit landing mid-request would otherwise leave the
+                    // success banner describing data that never went out.
+                    enabled: !state.isSubmitting,
                   ),
                 ),
             ],
