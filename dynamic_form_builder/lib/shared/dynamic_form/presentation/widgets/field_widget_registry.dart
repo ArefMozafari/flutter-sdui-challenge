@@ -15,6 +15,7 @@ typedef _Builder =
       FieldValue value,
       ValidationResult? error,
       ValueChanged<FieldValue> onChanged,
+      bool enabled,
     );
 
 /// Maps a [FormFieldSpec] runtime type to the widget that renders it — a
@@ -28,46 +29,62 @@ class FieldWidgetRegistry {
   const FieldWidgetRegistry._();
 
   static final Map<Type, _Builder> _builders = {
-    TextFieldSpec: (spec, value, error, onChanged) => TextFieldRenderer(
-      spec: spec,
-      value: value as TextValue,
-      error: error,
-      onChanged: onChanged,
-    ),
-    MultilineFieldSpec: (spec, value, error, onChanged) => TextFieldRenderer(
-      spec: spec,
-      value: value as TextValue,
-      error: error,
-      onChanged: onChanged,
-    ),
-    NumberFieldSpec: (spec, value, error, onChanged) => NumberFieldRenderer(
-      spec: spec as NumberFieldSpec,
-      value: value as NumberValue,
-      error: error,
-      onChanged: onChanged,
-    ),
-    SelectFieldSpec: (spec, value, error, onChanged) => SelectFieldRenderer(
-      spec: spec as SelectFieldSpec,
-      value: value as SelectValue,
-      error: error,
-      onChanged: onChanged,
-    ),
-    FileFieldSpec: (spec, value, error, onChanged) => FileFieldRenderer(
-      spec: spec as FileFieldSpec,
-      value: value as FileValue,
-      error: error,
-      onChanged: onChanged,
-    ),
+    TextFieldSpec: (spec, value, error, onChanged, enabled) =>
+        TextFieldRenderer(
+          spec: spec,
+          value: value as TextValue,
+          error: error,
+          onChanged: onChanged,
+          enabled: enabled,
+        ),
+    MultilineFieldSpec: (spec, value, error, onChanged, enabled) =>
+        TextFieldRenderer(
+          spec: spec,
+          value: value as TextValue,
+          error: error,
+          onChanged: onChanged,
+          enabled: enabled,
+        ),
+    NumberFieldSpec: (spec, value, error, onChanged, enabled) =>
+        NumberFieldRenderer(
+          spec: spec as NumberFieldSpec,
+          value: value as NumberValue,
+          error: error,
+          onChanged: onChanged,
+          enabled: enabled,
+        ),
+    SelectFieldSpec: (spec, value, error, onChanged, enabled) =>
+        SelectFieldRenderer(
+          spec: spec as SelectFieldSpec,
+          value: value as SelectValue,
+          error: error,
+          onChanged: onChanged,
+          enabled: enabled,
+        ),
+    FileFieldSpec: (spec, value, error, onChanged, enabled) =>
+        FileFieldRenderer(
+          spec: spec as FileFieldSpec,
+          value: value as FileValue,
+          error: error,
+          onChanged: onChanged,
+          enabled: enabled,
+        ),
   };
 
-  static Widget build(
-    FormFieldSpec spec,
-    FieldValue value,
-    ValidationResult? error,
-    ValueChanged<FieldValue> onChanged,
-  ) {
+  /// Named rather than positional: five arguments in a fixed order is the
+  /// point where a call site stops being readable and a transposition stops
+  /// being caught by the type checker.
+  static Widget build({
+    required FormFieldSpec spec,
+    required FieldValue value,
+    required ValidationResult? error,
+    required ValueChanged<FieldValue> onChanged,
+    required bool enabled,
+  }) {
     final builder = _builders[spec.runtimeType];
-    if (builder != null) return builder(spec, value, error, onChanged);
+    if (builder != null) {
+      return builder(spec, value, error, onChanged, enabled);
+    }
     return UnsupportedFieldRenderer(spec: spec as UnsupportedFieldSpec);
   }
 }

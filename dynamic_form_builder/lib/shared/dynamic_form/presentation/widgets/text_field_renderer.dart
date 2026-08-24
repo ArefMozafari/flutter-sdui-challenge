@@ -18,12 +18,17 @@ class TextFieldRenderer extends StatelessWidget {
     required this.value,
     required this.error,
     required this.onChanged,
+    this.enabled = true,
   });
 
   final FormFieldSpec spec;
   final TextValue value;
   final ValidationResult? error;
   final ValueChanged<FieldValue> onChanged;
+
+  /// False while a submit is in flight, so the values being sent can't
+  /// change underneath the request.
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +62,7 @@ class TextFieldRenderer extends StatelessWidget {
       isRequired: isRequired,
       maxLines: maxLines,
       size: sizeHint.toDs,
+      enabled: enabled,
     );
   }
 }

@@ -68,8 +68,20 @@ library, and every test fake lives in a different one.
   implementation (Dart classes are their own interface); DataSource has two real ones that must
   be swappable at runtime.
 - **Sealed classes end-to-end** (`FormFieldSpec`, `FieldValue`, `Failure`, `ValidationResult`,
-  `DynamicFormViewState`) — except `FieldWidgetRegistry`, a runtime `Map` on purpose: an
-  unrecognized field type degrades to a placeholder instead of failing to compile.
+  `DynamicFormViewState`, `SubmitStatus`) — except `FieldWidgetRegistry`, a runtime `Map` on
+  purpose: an unrecognized field type degrades to a placeholder instead of failing to compile.
+- **Submit state is one sealed `SubmitStatus`, not a set of flags — reversed on evidence.** This
+  file used to argue that sub-sealing `DynamicFormLoaded` would multiply into a
+  loaded × submitting × error cross product for no benefit. It wouldn't: the four flags
+  (`isSubmitting`, `submitSucceeded`, `submitFailure`, `fieldErrors`) were never independent, so
+  there was no cross product — just a five-case union written the long way. Because every
+  transition rebuilt the state object from scratch, an unmentioned flag reverted to its default,
+  and `updateValue` not mentioning `isSubmitting` let an edit cancel an in-flight submit
+  (double-submit, then lost input). One field that must be set beats four that can be forgotten.
+- **A form is frozen while its submit is in flight.** The view passes `enabled: false` to every
+  renderer and `updateValue` refuses writes, so the payload a request carries can't disagree with
+  what was on screen when the result lands. Belt and braces on purpose: the view lock is the UX,
+  the controller guard is the guarantee.
 - **No `freezed`.** Native sealed classes cover every union here; hand-written `fromJson` keeps
   the unknown-type fallback readable instead of hidden in generated code.
 - **The legacy payload shim is structural only.** The original sample response (see

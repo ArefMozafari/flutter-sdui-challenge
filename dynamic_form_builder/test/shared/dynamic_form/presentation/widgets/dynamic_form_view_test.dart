@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dynamic_form_builder/core/l10n/app_localizations.dart';
 import 'package:dynamic_form_builder/shared/dynamic_form/data/datasources/datasource_exceptions.dart';
 import 'package:dynamic_form_builder/shared/dynamic_form/data/datasources/dynamic_form_datasource.dart';
@@ -36,6 +38,11 @@ class _FakeDataSource implements DynamicFormDataSource {
 
   Object? fetchError;
   bool submitCalled = false;
+  Map<String, dynamic>? submittedFields;
+
+  /// When set, `submitForm` parks on it instead of returning — lets a test
+  /// drive the UI while a request is still in flight.
+  Completer<void>? submitGate;
 
   @override
   Future<Map<String, dynamic>> fetchFormSpec() async {
@@ -50,6 +57,8 @@ class _FakeDataSource implements DynamicFormDataSource {
     required List<SubmissionFile> files,
   }) async {
     submitCalled = true;
+    submittedFields = fields;
+    if (submitGate != null) await submitGate!.future;
   }
 }
 
@@ -117,6 +126,40 @@ void main() {
 
     expect(dataSource.submitCalled, isTrue);
     expect(find.text(l10n.stateSubmitSuccess), findsOneWidget);
+  });
+
+  testWidgets('every field is locked while a submit is in flight', (
+    tester,
+  ) async {
+    final dataSource = _FakeDataSource()..submitGate = Completer<void>();
+    await tester.pumpWidget(_harness(dataSource));
+    await tester.pumpAndSettle();
+
+    final context = tester.element(find.byType(Scaffold));
+    final l10n = AppLocalizations.of(context);
+
+    await tester.enterText(find.byType(TextFormField), 'Toyota');
+    await tester.tap(find.byType(DropdownButtonFormField<String>));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Gasoline').last);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text(l10n.actionSubmit));
+    await tester.pump(); // start the request, don't settle — it's gated open
+
+    expect(tester.widget<TextField>(find.byType(TextField)).enabled, isFalse);
+
+    // Typing into a locked field changes nothing, so what the request
+    // carries stays what was on screen when it started.
+    await tester.enterText(find.byType(TextFormField), 'Honda');
+    await tester.pump();
+
+    dataSource.submitGate!.complete();
+    await tester.pumpAndSettle();
+
+    expect(dataSource.submittedFields!['brand'], 'Toyota');
+    expect(find.text(l10n.stateSubmitSuccess), findsOneWidget);
+    expect(tester.widget<TextField>(find.byType(TextField)).enabled, isTrue);
   });
 
   testWidgets('a load failure shows an error view with a working retry', (
