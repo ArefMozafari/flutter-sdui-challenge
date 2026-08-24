@@ -32,9 +32,9 @@ import 'package:dynamic_form_builder/shared/dynamic_form/data/dto/style/server_s
 class FormFieldSpecDto {
   const FormFieldSpecDto._();
 
-  static final _styleResolver = const ServerStyleResolver();
+  static const _styleResolver = ServerStyleResolver();
 
-  static final Map<
+  static const Map<
     String,
     FormFieldSpec Function(_NormalizedField, FieldSizeHint)
   >

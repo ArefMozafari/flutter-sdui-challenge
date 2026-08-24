@@ -37,6 +37,10 @@ typedef _Builder =
 class FieldWidgetRegistry {
   const FieldWidgetRegistry._();
 
+  // `final`, not `const`, unlike the parser table in `FormFieldSpecDto`
+  // that this otherwise resembles: that one holds tear-offs of named
+  // top-level functions, which are compile-time constants, while these are
+  // closure literals, which are not. `const` here doesn't compile.
   static final Map<Type, _Builder> _builders = {
     TextFieldSpec: (spec, value, error, onChanged, enabled) =>
         TextFieldRenderer(
