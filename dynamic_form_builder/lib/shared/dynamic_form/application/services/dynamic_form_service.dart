@@ -49,8 +49,9 @@ class DynamicFormService {
     for (final field in form.fields) {
       if (field is UnsupportedFieldSpec) continue;
       switch (values[field.name]) {
-        case TextValue(:final text):
-          fields[field.name] = text;
+        // `trimmed`, not `text` — the same string validation measured.
+        case TextValue(:final trimmed):
+          fields[field.name] = trimmed;
         case NumberValue(number: final number?):
           fields[field.name] = number;
         case SelectValue(value: final value?):
