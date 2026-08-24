@@ -54,3 +54,8 @@ Naming conventions and abbreviations used throughout the codebase:
 | **Sealed class** | A Dart 3 hierarchy closed outside its own file — every `switch` over it is exhaustiveness-checked at compile time. |
 | **`FieldSizeHint` vs. `DsFieldSize`** | Same three sizes, two enums — Domain's and the design system's — mapped by Presentation. |
 | **`SelectedFile` vs. `SubmissionFile`** | Same picked file at two layers: Domain groups it implicitly by field; Data's flat list carries the field name explicitly. |
+
+## AI usage
+
+[ai.md](ai.md) is the written account. [ai-usage-notes.html](ai-usage-notes.html) is a
+browsable companion — the same real session log, colorized and easier to skim.
