@@ -6,6 +6,38 @@ SelectedFile _file(String name) =>
     SelectedFile(name: name, mimeType: 'image/png', bytes: const [1, 2, 3]);
 
 void main() {
+  group('resolveMimeType', () {
+    test('the seven the old hand-written table knew still resolve', () {
+      expect(resolveMimeType('a.jpg'), 'image/jpeg');
+      expect(resolveMimeType('a.jpeg'), 'image/jpeg');
+      expect(resolveMimeType('a.png'), 'image/png');
+      expect(resolveMimeType('a.gif'), 'image/gif');
+      expect(resolveMimeType('a.webp'), 'image/webp');
+      expect(resolveMimeType('a.heic'), 'image/heic');
+      expect(resolveMimeType('a.pdf'), 'application/pdf');
+    });
+
+    test('images the picker offers but the table missed now resolve', () {
+      // Each of these used to become application/octet-stream and get
+      // rejected by an `image/*` accept rule the file actually satisfies.
+      for (final name in ['a.bmp', 'a.tiff', 'a.tif', 'a.avif', 'a.heif']) {
+        expect(resolveMimeType(name), startsWith('image/'), reason: name);
+      }
+    });
+
+    test('extension case does not matter', () {
+      expect(resolveMimeType('PHOTO.PNG'), 'image/png');
+      expect(resolveMimeType('Photo.JpEg'), 'image/jpeg');
+    });
+
+    test('an unresolvable name still falls back to octet-stream', () {
+      // Kept deliberately: a type we can't identify has to fail an accept
+      // rule that names specific types, or the rule stops meaning anything.
+      expect(resolveMimeType('noextension'), 'application/octet-stream');
+      expect(resolveMimeType('trailing.'), 'application/octet-stream');
+    });
+  });
+
   group('mergePickedFiles', () {
     test('a single-file field replaces what it already held', () {
       // Pick, change your mind, pick again. Appending here left two files on
