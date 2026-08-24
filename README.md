@@ -1,62 +1,83 @@
-Dynamic Form Builder
-============
+# dynamic_form_builder
 
-## Task Description
+A server-driven dynamic form: the app fetches a form's structure from a
+server, renders text/number/multiline/select/file fields from it, validates
+client-side, and submits the result — including file uploads — back to the
+server. Built for the take-home challenge described in [task/README.md](task/README.md).
 
-We want to build a dynamic form builder in Flutter that fetches its structure from a server and displays it on a page. The form will include three input types:
+## Running it
 
-- Text input
-- Select box
-- File upload field
+The Flutter app lives in `dynamic_form_builder/`:
 
-## Key Steps:
-
-1. API Request: Send a request to retrieve the form structure from the server, which includes field types, labels, options, and validation rules.
-
-2. Render the Form: Dynamically generate the form on the page based on the retrieved structure, creating the appropriate input fields (text, select, and file fields).
-
-3. Submit Button: Add a submit button that collects all form data (including file uploads) when clicked.
-
-4. Form Validation: Ensure that all required fields are filled out and meet validation rules (e.g., text length, required selections, file formats) before allowing submission.
-
-5. Send Form Data: Once submitted, package and send the form data back to the server via another API call.
-
-This approach allows for flexible forms that can be easily updated server-side without modifying the app’s code.
-
-
-Sample response for getting form (Feel free to restructure the response if you think it would enhance clarity or effectiveness):
-
-```
-{"fields":[{"label":"برند:","name":"brand","props":{"color":"#000000","placeholder":"برند ماشین را وارد کنید","size":"large","type":"text"},"style":{"borderRadius":"5px","margin":"10px 0","padding":"8px"},"type":"input"},{"label":"مدل:","name":"model","props":{"color":"#000000","placeholder":"مدل ماشین را وارد کنید","size":"medium","type":"text"},"style":{"borderRadius":"5px","margin":"10px 0","padding":"8px"},"type":"input"},{"label":"سال ساخت:","name":"year","props":{"max":"2024","min":"1900","placeholder":"سال ساخت را وارد کنید","type":"number"},"style":{"borderRadius":"5px","margin":"10px 0","padding":"8px"},"type":"input"},{"label":"نوع سوخت:","name":"fuel_type","props":{"options":[{"label":"بنزین","value":"بنزین"},{"label":"گاز","value":"گاز"},{"label":"دیزل","value":"دیزل"},{"label":"الکتریکی","value":"الکتریکی"}]},"style":{"borderRadius":"5px","margin":"10px 0","padding":"8px"},"type":"select"},{"label":"رنگ ماشین:","name":"color","props":{"placeholder":"رنگ ماشین را وارد کنید","type":"text"},"style":{"borderRadius":"5px","margin":"10px 0","padding":"8px"},"type":"input"},{"label":"تعداد مالکین قبلی:","name":"previous_owners","props":{"min":"0","placeholder":"تعداد مالکین قبلی را وارد کنید","type":"number"},"style":{"borderRadius":"5px","margin":"10px 0","padding":"8px"},"type":"input"},{"label":"توضیحات وضعیت فنی:","name":"technical_condition","props":{"cols":50,"placeholder":"توضیحات درباره وضعیت فنی ماشین","rows":4},"style":{"borderRadius":"5px","margin":"10px 0","padding":"10px"},"type":"textarea"},{"label":"تصاویر ماشین:","name":"car_images","props":{"accept":"image/*","maxSize":"5MB","multiple":true},"style":{"margin":"10px 0"},"type":"file"}]}
+```bash
+cd dynamic_form_builder
+flutter pub get
+flutter gen-l10n      # generates lib/core/l10n/app_localizations*.dart
+flutter run
 ```
 
-Suppose the backend APIs are concurrently in the development process. So mock APIs in some way clean to continue your work.
+## Architecture
 
+Four layers — Presentation, Application, Data, Domain — Riverpod-wired, with Domain as the
+one node everything else depends on and nothing depends out of. Code splits into `core`
+(domain-agnostic infra), `shared` (domain-aware, multi-consumer — this challenge's one
+module, `dynamic_form`), and `features` (single-owner pages, empty here). A caller may skip
+a middle layer that adds nothing but delegation, never upward; each Riverpod provider is
+declared beside the class it constructs.
 
-## Implementation details
+Full dependency diagram, folder layout, the layer-skip and provider-colocation rules, and
+the architecture-level decisions worth knowing before reading the code:
+[ARCHITECTURE.md](ARCHITECTURE.md).
 
+## Design system
 
-Try to write your code as **reusable** and **readable** as possible. The architecture of your code and where you integrate your design system within the project are important to us.
+`core/design_system/` — tokens (spacing, radius, typography, color,
+motion) → a `ThemeData` derived from them → five reusable components
+(`DsTextField`, `DsSelect`, `DsFilePicker`, `DsButton`, `DsFieldLabel`).
+Every field renderer in `shared/dynamic_form/presentation/widgets/` wraps
+one of these — the design system never imports `dynamic_form`, and
+`dynamic_form` never inlines a raw color or spacing value.
 
-Also, don't forget to **document your code** and clear the reasons for all your decisions in the code.
+Server-declared style hints (`style.size`, or a legacy field's raw CSS)
+never reach a widget as-is: `ServerStyleResolver` (Data layer) resolves
+them into a Domain `FieldSizeHint`, which Presentation maps onto the
+design system's own `DsFieldSize` — see
+`shared/dynamic_form/presentation/widgets/field_size_hint_mapping.dart`.
 
-It is more valuable to us that the project comes with unit tests.
+## Localization
 
-Please fork this repository and add your code to that. Don't forget that your commits are so important.
-So be sure that you're committing your code often with a proper commit message.
+`fa` (default, RTL) and `en`, via Flutter's official ARB pipeline
+(`lib/core/l10n/*.arb` → `flutter gen-l10n`). Every validation message and
+failure Domain/Data can produce is a localization **key**, not a string —
+Domain and Data stay free of `BuildContext`/`intl` imports entirely.
+Presentation reconnects the key to real text:
+`validation_message_resolver.dart` and `failure_message_resolver.dart`
+switch on the key/`Failure` type to call the right generated
+`AppLocalizations` method, since those generated methods are strongly
+typed and can't be called by string key.
 
+## Tests
 
-## We all use AI. Don't be ashamed
+Unit tests sit next to the layer they cover — Domain (models, validation,
+failures), Data (DTO parsing including the legacy shim, style resolution,
+repository, and `HttpDynamicFormDataSource`'s multipart body construction),
+Application (submit orchestration), Presentation (controller state
+transitions, and full widget-tree interaction through `DynamicFormView`:
+fill a field, pick a dropdown option, submit, see the result).
+`flutter test` runs all of them.
 
-Everyone uses AI for everything. And we expect you to do the same. AI is a big part of our development process, and we care a lot about how you use AI tools during this task.
+## Vocabulary
 
-To earn our immunity after the AI takeover of Earth, we want to make sure you're using it properly.
+Naming conventions and abbreviations used throughout the codebase:
 
-Add a file named "ai.md" to your project. This file should contain the following information (the more explicit, the better):
-
-1. What AI tools and models did you use?
-2. Explain the different stages of software development where you used AI help. Describe how you used your tools at each stage.
-3. We want to know how you prompt. So add your prompts to this file too. For each prompt, explain which stage you used it in, how you evaluated the result, and what you did to fix any misbehavior.
-4 Explain how you monitor your token usage and what you do to manage it. Link your tools or add your helper prompts.
-
-*There's a sample.ai.md file in the project representing the expected template. Don't forget: "ai.md" is the only file we expect you to write entirely by yourself.*
+| Term | Meaning |
+|---|---|
+| **SDUI** | Server-Driven UI — the server sends structure, the client renders it, rather than the UI being hard-coded per screen. |
+| **`Ds` prefix** | Design System — every reusable component the design system owns (`DsTextField`, `DsButton`, …) is prefixed so it's never confused with a Flutter/Material widget of a similar name. |
+| **DTO** | Data Transfer Object — a type shaped for the wire (`FormSpecDto`, `FormFieldSpecDto`), mapped into a Domain model rather than used directly outside the Data layer. |
+| **ARB** | Application Resource Bundle — the JSON format Flutter's official localization tooling reads (`app_en.arb`, `app_fa.arb`) to generate `AppLocalizations`. |
+| **`Failure`** | Domain's sealed type for everything that can go wrong fetching/submitting a form (network, timeout, server, parse, unexpected) — never a raw exception past the Repository boundary. |
+| **`Either<Failure, T>`** | From `fpdart` — a value that's one of two types, here always "a `Failure`, or the successful `T`." Forces every caller to handle the failure case; there's no way to accidentally ignore it the way a nullable return or a swallowed exception allows. |
+| **Sealed class** | A Dart 3 class hierarchy closed to subtyping outside its own file — every `switch` over it is checked for exhaustiveness at compile time. Used for every closed set of variants in this codebase (`FormFieldSpec`, `Failure`, `ValidationResult`, `DynamicFormViewState`). |
+| **`FieldSizeHint` vs. `DsFieldSize`** | Two separate enums for the same three sizes — `FieldSizeHint` is Domain's (knows nothing about the design system), `DsFieldSize` is the design system's (knows nothing about forms). Presentation maps between them; see "Design system" above. |
+| **`SelectedFile` vs. `SubmissionFile`** | Both represent a picked file with real bytes, at different layers — `SelectedFile` (Domain) is grouped implicitly by its field in a `Map<String, FieldValue>`; `SubmissionFile` (Data) is the flat, wire-ready list `submitForm` sends across every field at once, so it carries its field name explicitly. |

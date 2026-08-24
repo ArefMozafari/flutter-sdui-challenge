@@ -5,10 +5,14 @@ Standing laws: `~/.claude/CLAUDE.md`, confirmed for this project on 2026-08-22.
 
 ### What this repo is
 
-A take-home technical challenge (see [README.md](README.md)): a server-driven dynamic form
-builder in Flutter. Task-facing files (`README.md`, `sample.ai.md`, `ai.md`, `.notes/ai-log.md`)
-stay at repo root. All application code lives in `dynamic_form_builder/` — a deliberate split
-so the challenge material and the actual deliverable don't mix in the same tree.
+A take-home technical challenge (see [task/README.md](task/README.md)): a server-driven
+dynamic form builder in Flutter. The two files the challenge itself provided (`README.md`,
+`sample.ai.md`) live under `task/`, untouched, so they stay distinguishable from anything
+written for the submission. `ai.md` (mine to write, never generated) and `.notes/ai-log.md`
+(gitignored raw material for it) stay at repo root. The submission's own docs — `README.md`
+and `ARCHITECTURE.md` — also live at repo root. All application code lives in
+`dynamic_form_builder/` — a deliberate split so the challenge material and the actual
+deliverable don't mix in the same tree.
 
 ### Project slots
 
@@ -19,7 +23,7 @@ so the challenge material and the actual deliverable don't mix in the same tree.
   doesn't matter: PRs stay open for self-review, nothing merges as part of this submission.
 - **Design system:** `dynamic_form_builder/lib/core/design_system/` — tokens → theme →
   components. Server-supplied style hints are resolved to the nearest token, never applied
-  as raw values (see the architecture decision record once written, Branch 2).
+  as raw values (see [ARCHITECTURE.md](ARCHITECTURE.md)).
 - **Locales:** `fa`, `en`. Source locale `en`, default runtime locale `fa`, RTL-aware.
 - **Run target:** iOS Simulator. Captures/screenshots for PRs are taken there, never on the
   paired physical iPhone.
@@ -31,11 +35,10 @@ so the challenge material and the actual deliverable don't mix in the same tree.
 
 **RiverPod Architecture** (user-supplied diagram): Presentation → Application →
 {Domain, Data}, Data → Domain, Domain depends on nothing. Feature-first layout inside
-`dynamic_form_builder/lib/features/dynamic_form/{presentation,application,domain,data}/`.
-Full rationale, the dependency-shape diagram, and the `core/` boundary rule live in the
-build plan for this unit — mirror them into an architecture doc as part of Branch 3's
-`docs:` commit rather than duplicating them here, since this file is a decision record, not
-a design doc.
+`dynamic_form_builder/lib/shared/dynamic_form/{presentation,application,domain,data}/`.
+Full rationale, the dependency-shape diagram, the `core`/`shared`/`features` boundary rule,
+and the layer-skip/provider-colocation conventions live in [ARCHITECTURE.md](ARCHITECTURE.md)
+— this file is a decision record, not a design doc.
 
 Two hard constraints given directly by the user, independent of the diagram:
 - No horizontal dependencies — no feature reaches into another feature's layers directly;
