@@ -80,3 +80,7 @@ library, and every test fake lives in a different one.
   what caught a real bug where duplicate map keys silently dropped all but the last file per field.
 - **Number field parsing is a documented simplification.** Unparseable text becomes empty, caught
   by the `required` check at submit time rather than a distinct "invalid number" error.
+- **What counts as parseable is not ASCII-only.** `parseLocalizedNumber` normalizes Persian and
+  Arabic-Indic digits before `num.tryParse`, which rejects them outright. Without it a number
+  field can't be filled from the keyboard this app's own default locale implies — found by
+  running the app in `fa`, not by a test.
