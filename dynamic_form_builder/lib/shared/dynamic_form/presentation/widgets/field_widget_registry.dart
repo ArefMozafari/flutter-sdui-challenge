@@ -25,6 +25,15 @@ typedef _Builder =
 /// worth opting out of it. A field type this build doesn't have a renderer
 /// for degrades to [UnsupportedFieldRenderer] instead of failing to
 /// compile or crashing at runtime — see [UnsupportedFieldSpec].
+///
+/// Worth being precise about what that buys, because the fallback used to
+/// promise more than it delivered. The graceful path for an unknown *wire*
+/// type comes from Domain modelling it as an [UnsupportedFieldSpec], not
+/// from this map — a `switch` would handle that case identically. What the
+/// map actually trades away is the compile error for a *known* subtype with
+/// no entry here, and that case now renders
+/// [UnsupportedFieldRenderer.forUnrendered] rather than throwing. It still
+/// isn't free: see that constructor for what a missing entry costs.
 class FieldWidgetRegistry {
   const FieldWidgetRegistry._();
 
@@ -85,6 +94,13 @@ class FieldWidgetRegistry {
     if (builder != null) {
       return builder(spec, value, error, onChanged, enabled);
     }
-    return UnsupportedFieldRenderer(spec: spec as UnsupportedFieldSpec);
+    // Branch rather than cast. `spec as UnsupportedFieldSpec` held only for
+    // the wire-unknown case; for any *known* subtype missing from the map
+    // above it threw a TypeError on screen — the runtime crash this
+    // registry's own design is meant to rule out.
+    return switch (spec) {
+      UnsupportedFieldSpec() => UnsupportedFieldRenderer(spec: spec),
+      _ => UnsupportedFieldRenderer.forUnrendered(spec),
+    };
   }
 }

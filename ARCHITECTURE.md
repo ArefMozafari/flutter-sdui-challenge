@@ -70,6 +70,12 @@ library, and every test fake lives in a different one.
 - **Sealed classes end-to-end** (`FormFieldSpec`, `FieldValue`, `Failure`, `ValidationResult`,
   `DynamicFormViewState`, `SubmitStatus`) — except `FieldWidgetRegistry`, a runtime `Map` on
   purpose: an unrecognized field type degrades to a placeholder instead of failing to compile.
+  Being precise about what that buys, since the fallback used to promise more than it delivered:
+  the graceful path for an unknown *wire* type comes from Domain modelling it as an
+  `UnsupportedFieldSpec`, which a `switch` would handle identically. What the `Map` trades away
+  is the compile error for a *known* subtype with no entry — a case that used to throw a
+  `TypeError` on screen and now renders a placeholder, but still leaves that field validated and
+  invisible, so a required one would block submit. A missing entry has to be caught in review.
 - **Submit state is one sealed `SubmitStatus`, not a set of flags — reversed on evidence.** This
   file used to argue that sub-sealing `DynamicFormLoaded` would multiply into a
   loaded × submitting × error cross product for no benefit. It wouldn't: the four flags
