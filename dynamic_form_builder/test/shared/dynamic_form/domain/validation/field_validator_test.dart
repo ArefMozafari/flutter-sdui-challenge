@@ -78,6 +78,54 @@ void main() {
     test('null number on optional field is valid', () {
       expect(validateField(spec, const NumberValue(null)).isValid, isTrue);
     });
+
+    test('unparsable text on an optional field is invalid, not dropped', () {
+      // The silent case: this used to pass validation and then vanish from
+      // the payload, so the user got no error and no submitted value.
+      final result = validateField(spec, const NumberValue(null, text: '12a'));
+      expect((result as InvalidResult).messageKey, 'validationInvalidNumber');
+    });
+
+    test('unparsable text reports invalid rather than required', () {
+      final requiredSpec = NumberFieldSpec(
+        name: 'year',
+        label: 'Year',
+        sizeHint: FieldSizeHint.medium,
+        validation: const FieldValidation(required: true),
+      );
+
+      final result = validateField(
+        requiredSpec,
+        const NumberValue(null, text: '12a'),
+      );
+
+      // "required" over a field visibly containing 12a is simply untrue.
+      expect((result as InvalidResult).messageKey, 'validationInvalidNumber');
+    });
+
+    test('a genuinely empty required field still reports required', () {
+      final requiredSpec = NumberFieldSpec(
+        name: 'year',
+        label: 'Year',
+        sizeHint: FieldSizeHint.medium,
+        validation: const FieldValidation(required: true),
+      );
+
+      final result = validateField(requiredSpec, const NumberValue(null));
+      expect((result as InvalidResult).messageKey, 'validationRequired');
+    });
+
+    test('whitespace alone counts as empty, not as unparsable', () {
+      expect(
+        validateField(spec, const NumberValue(null, text: '   ')).isValid,
+        isTrue,
+      );
+    });
+
+    test('text that parses is validated on the number, not the text', () {
+      final result = validateField(spec, const NumberValue(1899, text: '1899'));
+      expect((result as InvalidResult).messageKey, 'validationMin');
+    });
   });
 
   group('select field', () {

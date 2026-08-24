@@ -87,6 +87,14 @@ ValidationResult _validateText(FieldValidation rules, TextValue value) {
 ValidationResult _validateNumber(FieldValidation rules, NumberValue value) {
   final number = value.number;
 
+  // Before `required`, on purpose. A field showing `12a` is not empty, and
+  // answering it with "this field is required" describes something the user
+  // can plainly see isn't true. This also catches the optional case, which
+  // used to pass validation and then quietly drop the value from the
+  // payload — no error, no number submitted, nothing to notice.
+  if (value.isUnparsable) {
+    return const ValidationResult.invalid('validationInvalidNumber');
+  }
   if (rules.required && number == null) {
     return const ValidationResult.invalid('validationRequired');
   }
